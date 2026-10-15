@@ -1,1 +1,1 @@
-### SiftChat
+### Siftify
