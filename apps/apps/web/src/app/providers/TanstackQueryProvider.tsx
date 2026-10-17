@@ -11,7 +11,11 @@ const client = new QueryClient({
   },
 })
 
-export const TanstackQueryProvider = ({ children }: React.PropsWithChildren) => {
+interface TanstackQueryProviderProps {
+  children: React.ReactNode
+}
+
+export const TanstackQueryProvider = ({ children }: TanstackQueryProviderProps) => {
   return (
     <QueryClientProvider client={client}>
       {children}
