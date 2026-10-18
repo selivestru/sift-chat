@@ -16,7 +16,9 @@ function RootComponent() {
     <PlayerProvider>
       <div className="grid h-dvh grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[minmax(0,1fr)_auto] overflow-hidden">
         {/* Left sidebar */}
-        <aside className="overflow-y-auto overscroll-contain border-r">Left sidebar</aside>
+        <aside className="border-r-border overflow-y-auto overscroll-contain border-r">
+          Left sidebar
+        </aside>
 
         {/* Main content */}
         <main className="overflow-y-auto overscroll-contain">
@@ -24,7 +26,9 @@ function RootComponent() {
         </main>
 
         {/* Right sidebar */}
-        <aside className="overflow-y-auto overscroll-contain border-l">Right sidebar</aside>
+        <aside className="border-l-border overflow-y-auto overscroll-contain border-l">
+          Right sidebar
+        </aside>
 
         {/* Player */}
         <MusicPlayer />

@@ -1,4 +1,3 @@
-import { Button } from '@heroui/react'
 import { createFileRoute } from '@tanstack/react-router'
 
 import { usePlayerStore } from '~/modules/MusicPlayer'
@@ -10,15 +9,15 @@ export const Route = createFileRoute('/')({
 function RouteComponent() {
   return (
     <div>
-      <Button
-        onPress={() => {
+      <button
+        onClick={() => {
           usePlayerStore.getState().setCurrentTrack({
-            audioUrl: 'test.mp3',
+            audioUrl: 'music-test/05 - Tom Olivier - Forever In My Heart.mp3',
           })
         }}
       >
         Track
-      </Button>
+      </button>
     </div>
   )
 }

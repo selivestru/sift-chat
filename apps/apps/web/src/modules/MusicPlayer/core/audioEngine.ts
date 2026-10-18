@@ -2,12 +2,20 @@ export class AudioEngine {
   private audio = new Audio()
   private abortController = new AbortController()
 
-  constructor() {
-    this.audio.volume = 0.5
+  constructor(volume: number) {
+    this.audio.volume = volume
   }
 
   public get error() {
     return this.audio.error
+  }
+
+  public get currentTime() {
+    return this.audio.currentTime
+  }
+
+  public get volume() {
+    return this.audio.volume
   }
 
   public setSrc(src: string) {
@@ -38,6 +46,14 @@ export class AudioEngine {
     return () => {
       this.audio.removeEventListener(eventName, callback)
     }
+  }
+
+  public seek(seconds: number) {
+    this.audio.currentTime = seconds
+  }
+
+  public setVolume(volume: number) {
+    this.audio.volume = volume
   }
 
   public destroy() {
