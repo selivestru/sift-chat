@@ -81,10 +81,6 @@
   --warning-foreground: oklch(21.03% 0.0059 80.47);
 }
 
-html {
-  @apply scrollbar-gutter-stable;
-}
-
 body {
-  @apply bg-background text-foreground min-h-dvh overflow-x-hidden font-sans text-base font-normal antialiased;
+  @apply bg-background text-foreground font-sans text-base font-normal antialiased;
 }
