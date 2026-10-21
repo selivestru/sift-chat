@@ -4,20 +4,24 @@ import {
   type SessionRecord,
 } from '@nestjs/authentication'
 import { Injectable } from '@nestjs/common'
-import { User } from '~/generated/prisma/client.js'
-import { UserService } from '../user/user.service.js'
+
+import { safeUser } from '~/common/utils/safe-user.js'
+
+import { UsersService } from '../users/users.service.js'
+import { SafeUser } from '../users/users.types.js'
 
 @Injectable()
-export class SessionAuth extends SessionCookieProvider<User> {
+export class SessionAuth extends SessionCookieProvider<SafeUser> {
   constructor(
-    private readonly userService: UserService,
+    private readonly userService: UsersService,
     registry: AuthenticationRegistry,
   ) {
     super()
     registry.registerProvider(this)
   }
 
-  validate(session: SessionRecord) {
-    return this.userService.findById(session.userId)
+  async validate(session: SessionRecord) {
+    const user = await this.userService.findById(session.userId)
+    return user ? safeUser(user) : null
   }
 }

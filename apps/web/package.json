@@ -11,7 +11,8 @@
     "lint:fix": "oxlint --fix",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
-    "doctor": "npx react-doctor@latest"
+    "doctor": "npx react-doctor@latest",
+    "typecheck": "tsrs --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -51,6 +52,7 @@
     "oxfmt": "^0.73.0",
     "oxlint": "^1.88.0",
     "oxlint-tsgolint": "^7.0.2004",
+    "tsrs": "^0.18.0-ts7.1.0-dev.20260929",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   }

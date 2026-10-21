@@ -15,5 +15,5 @@
   "sortImports": true,
   "sortTailwindcss": true,
   "sortPackageJson": true,
-  "ignorePatterns": [".agents"]
+  "ignorePatterns": ["src/generated"]
 }

@@ -1,0 +1,46 @@
+glob_matcher: doublestar
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: api-lint
+      root: apps/api/
+      glob: 'apps/api/**/*.{ts,js,mjs,cjs}'
+      exclude: 'apps/api/src/generated/**'
+      run: bunx --no-install oxlint {staged_files}
+
+    - name: api-format
+      root: apps/api/
+      glob: 'apps/api/**/*.{ts,js,mjs,cjs,json,jsonc,yml,yaml,md}'
+      exclude: 'apps/api/src/generated/**'
+      run: bunx --no-install oxfmt --check {staged_files}
+
+    - name: web-lint
+      root: apps/web/
+      glob: 'apps/web/**/*.{ts,tsx,js,jsx,mjs,cjs}'
+      exclude: 'apps/web/src/app/routeTree.gen.ts'
+      run: bunx --no-install oxlint {staged_files}
+
+    - name: web-format
+      root: apps/web/
+      glob: 'apps/web/**/*.{ts,tsx,js,jsx,mjs,cjs,json,jsonc,css,html,yml,yaml,md}'
+      exclude: 'apps/web/src/app/routeTree.gen.ts'
+      run: bun run format:check {staged_files}
+
+pre-push:
+  parallel: true
+  jobs:
+    - name: api-types
+      root: apps/api/
+      glob: 'apps/api/**'
+      run: bun run typecheck
+
+    - name: api-tests
+      root: apps/api/
+      glob: 'apps/api/**'
+      run: bun run test
+
+    - name: web-types
+      root: apps/web/
+      glob: 'apps/web/**'
+      run: bun run typecheck

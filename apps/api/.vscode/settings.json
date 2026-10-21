@@ -1,0 +1,18 @@
+{
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.codeActionsOnSave": {
+    "source.format.oxc": "always"
+  },
+  "oxc.typeAware": true,
+  "files.readonlyInclude": {
+    "src/generated/**/*": true
+  },
+  "files.watcherExclude": {
+    "src/generated/**/*": true
+  },
+  "search.exclude": {
+    "src/generated/**/*": true
+  }
+}

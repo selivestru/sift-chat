@@ -26,5 +26,5 @@
       }
     ]
   },
-  "ignorePatterns": ["src/app/routeTree.gen.ts", ".agents"]
+  "ignorePatterns": ["src/app/routeTree.gen.ts"]
 }
