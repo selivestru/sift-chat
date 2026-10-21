@@ -1,38 +1,22 @@
 import type { QueryClient } from '@tanstack/react-query'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 
-import { MusicPlayer, PlayerProvider } from '~/modules/MusicPlayer'
+import { currentUserOptions } from '~/common/constants/currentUserOptions'
+import type { User } from '~/modules/User'
 
 interface RouterContext {
   queryClient: QueryClient
+  user: User | null
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
+  beforeLoad: async ({ context }) => {
+    const user = await context.queryClient.query(currentUserOptions)
+    return { user }
+  },
   component: RootComponent,
 })
 
 function RootComponent() {
-  return (
-    <PlayerProvider>
-      <div className="grid h-dvh grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[minmax(0,1fr)_auto] overflow-hidden">
-        {/* Left sidebar */}
-        <aside className="border-r-border overflow-y-auto overscroll-contain border-r">
-          Left sidebar
-        </aside>
-
-        {/* Main content */}
-        <main className="overflow-y-auto overscroll-contain">
-          <Outlet />
-        </main>
-
-        {/* Right sidebar */}
-        <aside className="border-l-border overflow-y-auto overscroll-contain border-l">
-          Right sidebar
-        </aside>
-
-        {/* Player */}
-        <MusicPlayer />
-      </div>
-    </PlayerProvider>
-  )
+  return <Outlet />
 }

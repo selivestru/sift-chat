@@ -7,6 +7,7 @@ const router = createRouter({
   routeTree,
   context: {
     queryClient: undefined!,
+    user: undefined!,
   },
 })
 

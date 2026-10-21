@@ -1,3 +1,4 @@
+import { Toaster } from '~/common/ui/Toast'
 import { TooltipProvider } from '~/common/ui/Tooltip'
 
 import { TanstackQueryProvider } from './TanstackQueryProvider'
@@ -8,6 +9,7 @@ export const Providers = () => {
     <TanstackQueryProvider>
       <TooltipProvider>
         <TanstackRouterProvider />
+        <Toaster />
       </TooltipProvider>
     </TanstackQueryProvider>
   )

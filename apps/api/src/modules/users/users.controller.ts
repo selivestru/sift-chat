@@ -10,7 +10,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get('me')
-  async me(@CurrentUser() user: User) {
+  me(@CurrentUser() user: User) {
     return user
   }
 }

@@ -18,7 +18,11 @@ async function bootstrap() {
     credentials: true,
   })
 
-  app.useGlobalPipes(new StandardSchemaValidationPipe())
+  app.useGlobalPipes(
+    new StandardSchemaValidationPipe({
+      transform: true,
+    }),
+  )
 
   app.enableShutdownHooks()
 

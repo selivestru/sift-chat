@@ -1,4 +1,4 @@
-import { ArgumentsHost, Catch, ConflictException } from '@nestjs/common'
+import { ArgumentsHost, Catch, HttpException } from '@nestjs/common'
 import { BaseExceptionFilter } from '@nestjs/core'
 
 import { Prisma } from '~/generated/prisma/client.js'
@@ -7,7 +7,12 @@ import { Prisma } from '~/generated/prisma/client.js'
 export class PrismaExceptionFilter extends BaseExceptionFilter {
   override catch(exception: Prisma.PrismaClientKnownRequestError, host: ArgumentsHost) {
     if (exception.code === 'P2002') {
-      return super.catch(new ConflictException('Resource already exists'), host)
+      return super.catch(
+        new HttpException('Resource already exists', 409, {
+          errorCode: 'RESOURCE_ALREADY_EXISTS',
+        }),
+        host,
+      )
     }
 
     return super.catch(exception, host)

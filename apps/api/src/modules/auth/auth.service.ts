@@ -1,5 +1,5 @@
 import { PasswordHasher } from '@nestjs/authentication'
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { HttpException, Injectable } from '@nestjs/common'
 
 import { safeUser } from '~/common/utils/safe-user.js'
 
@@ -19,7 +19,9 @@ export class AuthService {
     const user = await this.usersService.findByEmail(body.email)
 
     if (user) {
-      throw new ConflictException('User with this email already exists')
+      throw new HttpException('User with this email already exists', 409, {
+        errorCode: 'USER_ALREADY_EXISTS',
+      })
     }
 
     const hashedPassword = await this.passwordHasher.hash(body.password)
@@ -38,7 +40,9 @@ export class AuthService {
     const isValid = await this.passwordHasher.verify(body.password, user?.password)
 
     if (!user || !isValid) {
-      throw new UnauthorizedException('Invalid email or password')
+      throw new HttpException('Invalid email or password', 401, {
+        errorCode: 'INVALID_CREDENTIALS',
+      })
     }
 
     return safeUser(user)

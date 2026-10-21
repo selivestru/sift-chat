@@ -23,6 +23,7 @@ import { UsersModule } from './modules/users/users.module.js'
         session: {
           absoluteTtl: '7d',
           idleTtl: '3d',
+          trustedOrigins: [configService.get('ORIGIN', { infer: true })],
         },
         oidc: {
           callbackUrl: `${configService.get('APP_URL', { infer: true })}/api/auth/oidc/:provider/callback`,
