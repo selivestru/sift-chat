@@ -1,10 +1,9 @@
 import { VolumeCross, VolumeDown, VolumeHigh, VolumeLow2, type IconComponent } from 'reicon-react'
 
-import { Slider } from '~/common/ui/Slider'
-
 import { usePlayer } from '../hooks/usePlayer'
 import { usePlayerStore } from '../stores/player.store'
 import { normalizeVolumeForAudio, normalizeVolumeForUI } from '../utils/volume'
+import { VolumeSlider } from './VolumeSlider'
 
 export const VolumeControl = () => {
   const volume = usePlayerStore((state) => state.volume)
@@ -35,16 +34,7 @@ export const VolumeControl = () => {
   return (
     <div className="flex items-center justify-end-safe gap-2">
       {getVolumeIcon()}
-      <Slider
-        value={volumePercent}
-        onValueChange={handleChangeVolume}
-        updateMode="onDrag"
-        step={1}
-        min={0}
-        max={100}
-        aria-label="Volume slider"
-        className="w-31.25"
-      />
+      <VolumeSlider value={volumePercent} onValueChange={handleChangeVolume} className="w-31.25" />
     </div>
   )
 }

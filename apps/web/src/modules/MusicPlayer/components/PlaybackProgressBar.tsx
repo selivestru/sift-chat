@@ -1,30 +1,24 @@
-import { Slider } from '~/common/ui/Slider'
-import { formatTime } from '~/common/utils/formatTime'
-
 import { usePlayer } from '../hooks/usePlayer'
 import { usePlayerStore } from '../stores/player.store'
+import { PlaybackSlider } from './PlaybackSlider'
 
 export const PlaybackProgressBar = () => {
   const currentTime = usePlayerStore((state) => state.currentTime)
-  const { seek } = usePlayer()
+  const currentTrack = usePlayerStore((state) => state.currentTrack)
+  const isPlaying = usePlayerStore((state) => state.isPlaying)
+  const { seek, getCurrentTime } = usePlayer()
 
   const duration = 130
-  const formattedCurrentTime = currentTime ? formatTime(currentTime) : '--:--'
-  const formattedDuration = duration ? formatTime(duration) : '--:--'
 
   return (
-    <div className="grid w-full grid-cols-[auto_1fr_auto] items-center gap-3 tabular-nums">
-      <span>{formattedCurrentTime}</span>
-      <Slider
-        value={currentTime}
-        onValueChange={seek}
-        updateMode="onRelease"
-        min={0}
-        max={duration ?? 1}
-        step={1}
-        aria-label="Seek slider"
-      />
-      <span>{formattedDuration}</span>
-    </div>
+    <PlaybackSlider
+      key={currentTrack?.audioUrl ?? 'no-track'}
+      value={currentTime}
+      duration={duration}
+      disabled={!currentTrack}
+      isPlaying={isPlaying}
+      getCurrentTime={getCurrentTime}
+      onSeek={seek}
+    />
   )
 }

@@ -9,7 +9,8 @@ import { getVolumeFromStorage } from '../utils/volume'
 interface PlayerProviderContext {
   play: () => void
   pause: () => void
-  seek: (seconds: number) => void
+  seek: (seconds: number) => Promise<number>
+  getCurrentTime: () => number
   setVolume: (volume: number) => void
 }
 
@@ -41,11 +42,6 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     const handleTimeUpdate = () => {
       const seconds = Math.floor(audioEngine.currentTime)
 
-      if (currentTimeRef.current === 0) {
-        setCurrentTime(seconds)
-        return
-      }
-
       if (currentTimeRef.current === seconds) return
 
       currentTimeRef.current = seconds
@@ -69,6 +65,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       audioEngine.subscribe('play', handlePlay),
       audioEngine.subscribe('pause', handlePause),
       audioEngine.subscribe('timeupdate', handleTimeUpdate),
+      audioEngine.subscribe('seeked', handleTimeUpdate),
       audioEngine.subscribe('volumechange', handleVolumeChange),
       audioEngine.subscribe('ended', handleEnded),
       audioEngine.subscribe('error', handleError),
@@ -83,6 +80,8 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   useEffect(() => {
     if (!currentTrack) return
 
+    currentTimeRef.current = 0
+    setCurrentTime(0)
     audioEngine.setSrc(currentTrack.audioUrl)
     audioEngine.play().catch((error) => {
       console.error('Failed to play audio', error)
@@ -112,6 +111,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       },
       pause: () => audioEngine.pause(),
       seek: (seconds: number) => audioEngine.seek(seconds),
+      getCurrentTime: () => audioEngine.currentTime,
       setVolume: (volume: number) => {
         const normalizedVolume = Math.min(1, Math.max(0, volume))
         audioEngine.setVolume(normalizedVolume)
