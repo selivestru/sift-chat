@@ -1,3 +1,4 @@
+import { Button } from '@heroui/react'
 import { Pause, Play } from 'reicon-react'
 
 import { usePlayer } from '../hooks/usePlayer'
@@ -20,8 +21,8 @@ export const PlayPauseButton = () => {
   const Icon = isPlaying ? Pause : Play
 
   return (
-    <button onClick={toggleIsPlaying} disabled={!currentTrack}>
-      <Icon className="size-5" />
-    </button>
+    <Button isIconOnly variant="ghost" onPress={toggleIsPlaying} isDisabled={!currentTrack}>
+      <Icon weight="Filled" className="size-5" />
+    </Button>
   )
 }

@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
 import { getVolumeFromStorage } from '../utils/volume'
@@ -6,6 +7,7 @@ import { getVolumeFromStorage } from '../utils/volume'
 interface State {
   isPlaying: boolean
   currentTrack: {
+    id: string
     audioUrl: string
   } | null
   currentTime: number | null
@@ -22,15 +24,20 @@ interface Actions {
 type Store = State & Actions
 
 export const usePlayerStore = create<Store>()(
-  immer((set) => ({
-    isPlaying: false,
-    currentTrack: null,
-    currentTime: null,
-    volume: getVolumeFromStorage(),
+  devtools(
+    immer((set) => ({
+      isPlaying: false,
+      currentTrack: null,
+      currentTime: null,
+      volume: getVolumeFromStorage(),
 
-    setIsPlaying: (isPlaying: boolean) => set({ isPlaying }),
-    setCurrentTrack: (currentTrack: State['currentTrack']) => set({ currentTrack }),
-    setCurrentTime: (currentTime: State['currentTime']) => set({ currentTime }),
-    setVolume: (volume: number) => set({ volume }),
-  })),
+      setIsPlaying: (isPlaying) => set({ isPlaying }, undefined, 'change is playing'),
+      setCurrentTrack: (currentTrack) => set({ currentTrack }, undefined, 'change current track'),
+      setCurrentTime: (currentTime) => set({ currentTime }, undefined, 'change current time'),
+      setVolume: (volume) => set({ volume }, undefined, 'change volume'),
+    })),
+    {
+      name: 'player',
+    },
+  ),
 )

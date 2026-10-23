@@ -75,7 +75,7 @@ export const VolumeSlider = ({ value, onValueChange, className }: VolumeSliderPr
       aria-valuetext={`${displayedValue}%`}
       className={cn(
         'group relative flex h-4.5 w-full touch-none items-center outline-none select-none',
-        'cursor-pointer focus-visible:ring-2 focus-visible:ring-primary',
+        'cursor-pointer focus-visible:ring-2 focus-visible:ring-accent',
         className,
       )}
       onKeyDown={handleKeyDown}
@@ -111,16 +111,16 @@ export const VolumeSlider = ({ value, onValueChange, className }: VolumeSliderPr
     >
       <span
         ref={railRef}
-        className="pointer-events-none absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 bg-white/30"
+        className="bg-segment pointer-events-none absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2"
       >
         <span
           style={{ width: `${displayedValue}%` }}
-          className={cn('absolute top-0 left-0 h-full', isActive ? 'bg-primary' : 'bg-white')}
+          className={cn('absolute top-0 left-0 h-full', isActive ? 'bg-accent' : 'bg-foreground')}
         />
         {isActive && (
           <span
             style={{ left: `${displayedValue}%` }}
-            className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 bg-white"
+            className="bg-foreground absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2"
           />
         )}
       </span>

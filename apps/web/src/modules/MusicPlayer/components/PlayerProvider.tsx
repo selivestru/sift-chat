@@ -9,7 +9,7 @@ import { getVolumeFromStorage } from '../utils/volume'
 interface PlayerProviderContext {
   play: () => void
   pause: () => void
-  seek: (seconds: number) => Promise<number>
+  seek: (seconds: number) => void
   getCurrentTime: () => number
   setVolume: (volume: number) => void
 }
@@ -81,7 +81,9 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     if (!currentTrack) return
 
     currentTimeRef.current = 0
+
     setCurrentTime(0)
+
     audioEngine.setSrc(currentTrack.audioUrl)
     audioEngine.play().catch((error) => {
       console.error('Failed to play audio', error)

@@ -22,4 +22,4 @@ dist-ssr
 *.sw?
 .tanstack
 .env
-public/music-test
+public/test

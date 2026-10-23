@@ -9,5 +9,6 @@ export interface Track {
   album: AlbumSummary
   trackNumber: number
   explicit: boolean
+  audioUrl: string // TODO: temporary
   previewUrl: string | null
 }

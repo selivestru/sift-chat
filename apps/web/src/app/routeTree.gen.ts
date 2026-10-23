@@ -12,8 +12,12 @@ import { Route as rootRouteImport } from './../routes/__root'
 import { Route as AppRouteImport } from './../routes/_app'
 import { Route as AuthRouteRouteImport } from './../routes/auth/route'
 import { Route as AppIndexRouteImport } from './../routes/_app/index'
+import { Route as AppLikedSongsRouteImport } from './../routes/_app/liked-songs'
+import { Route as AppSearchRouteImport } from './../routes/_app/search'
 import { Route as AuthSignInRouteImport } from './../routes/auth/sign-in'
 import { Route as AuthSignUpRouteImport } from './../routes/auth/sign-up'
+import { Route as AppAlbumIdRouteImport } from './../routes/_app/album.$id'
+import { Route as AppArtistIdRouteImport } from './../routes/_app/artist.$id'
 
 const AppRoute = AppRouteImport.update({
   id: '/_app',
@@ -29,6 +33,16 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppLikedSongsRoute = AppLikedSongsRouteImport.update({
+  id: '/liked-songs',
+  path: '/liked-songs',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
 const AuthSignInRoute = AuthSignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
@@ -39,39 +53,81 @@ const AuthSignUpRoute = AuthSignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AppAlbumIdRoute = AppAlbumIdRouteImport.update({
+  id: '/album/$id',
+  path: '/album/$id',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppArtistIdRoute = AppArtistIdRouteImport.update({
+  id: '/artist/$id',
+  path: '/artist/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/auth': typeof AuthRouteRouteWithChildren
   '/': typeof AppIndexRoute
+  '/liked-songs': typeof AppLikedSongsRoute
+  '/search': typeof AppSearchRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
+  '/album/$id': typeof AppAlbumIdRoute
+  '/artist/$id': typeof AppArtistIdRoute
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteRouteWithChildren
+  '/liked-songs': typeof AppLikedSongsRoute
+  '/search': typeof AppSearchRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/': typeof AppIndexRoute
+  '/album/$id': typeof AppAlbumIdRoute
+  '/artist/$id': typeof AppArtistIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/auth': typeof AuthRouteRouteWithChildren
   '/_app': typeof AppRouteWithChildren
+  '/_app/liked-songs': typeof AppLikedSongsRoute
+  '/_app/search': typeof AppSearchRoute
   '/auth/sign-in': typeof AuthSignInRoute
   '/auth/sign-up': typeof AuthSignUpRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/album/$id': typeof AppAlbumIdRoute
+  '/_app/artist/$id': typeof AppArtistIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/auth' | '/' | '/auth/sign-in' | '/auth/sign-up'
+  fullPaths:
+    | '/auth'
+    | '/'
+    | '/liked-songs'
+    | '/search'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/album/$id'
+    | '/artist/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/auth' | '/auth/sign-in' | '/auth/sign-up' | '/'
+  to:
+    | '/auth'
+    | '/liked-songs'
+    | '/search'
+    | '/auth/sign-in'
+    | '/auth/sign-up'
+    | '/'
+    | '/album/$id'
+    | '/artist/$id'
   id:
     | '__root__'
     | '/auth'
     | '/_app'
+    | '/_app/liked-songs'
+    | '/_app/search'
     | '/auth/sign-in'
     | '/auth/sign-up'
     | '/_app/'
+    | '/_app/album/$id'
+    | '/_app/artist/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -102,6 +158,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/liked-songs': {
+      id: '/_app/liked-songs'
+      path: '/liked-songs'
+      fullPath: '/liked-songs'
+      preLoaderRoute: typeof AppLikedSongsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/search': {
+      id: '/_app/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/auth/sign-in': {
       id: '/auth/sign-in'
       path: '/sign-in'
@@ -115,6 +185,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/auth/sign-up'
       preLoaderRoute: typeof AuthSignUpRouteImport
       parentRoute: typeof AuthRouteRoute
+    }
+    '/_app/album/$id': {
+      id: '/_app/album/$id'
+      path: '/album/$id'
+      fullPath: '/album/$id'
+      preLoaderRoute: typeof AppAlbumIdRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/artist/$id': {
+      id: '/_app/artist/$id'
+      path: '/artist/$id'
+      fullPath: '/artist/$id'
+      preLoaderRoute: typeof AppArtistIdRouteImport
+      parentRoute: typeof AppRoute
     }
   }
 }
@@ -134,11 +218,19 @@ const AuthRouteRouteWithChildren = AuthRouteRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppLikedSongsRoute: typeof AppLikedSongsRoute
+  AppSearchRoute: typeof AppSearchRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppAlbumIdRoute: typeof AppAlbumIdRoute
+  AppArtistIdRoute: typeof AppArtistIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppLikedSongsRoute: AppLikedSongsRoute,
+  AppSearchRoute: AppSearchRoute,
   AppIndexRoute: AppIndexRoute,
+  AppAlbumIdRoute: AppAlbumIdRoute,
+  AppArtistIdRoute: AppArtistIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

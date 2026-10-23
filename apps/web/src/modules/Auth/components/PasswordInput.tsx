@@ -1,40 +1,32 @@
+import { Button, InputGroup, type InputGroupInputProps } from '@heroui/react'
 import { useState } from 'react'
 import { Eye, EyeOff } from 'reicon-react'
 
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupInput,
-} from '~/common/ui/InputGroup'
+export type PasswordInputProps = InputGroupInputProps
 
-export type PasswordInputProps = Omit<React.ComponentProps<'input'>, 'type'>
-
-export const PasswordInput = ({ disabled, ...props }: PasswordInputProps) => {
+export const PasswordInput = (props: PasswordInputProps) => {
   const [isVisible, setIsVisible] = useState(false)
 
+  const Icon = isVisible ? Eye : EyeOff
+
   return (
-    <InputGroup>
-      <InputGroupInput
+    <InputGroup fullWidth variant="secondary">
+      <InputGroup.Input
         autoCapitalize="none"
         spellCheck={false}
-        disabled={disabled}
         type={isVisible ? 'text' : 'password'}
         {...props}
       />
-      <InputGroupAddon align="inline-end">
-        <InputGroupButton
-          type="button"
-          size="icon-sm"
-          className="size-9"
+      <InputGroup.Suffix className="pe-0">
+        <Button
+          isIconOnly
           aria-label={isVisible ? 'Hide password' : 'Show password'}
-          aria-controls={props.id}
-          disabled={disabled}
-          onClick={() => setIsVisible((visible) => !visible)}
+          variant="ghost"
+          onPress={() => setIsVisible((prev) => !prev)}
         >
-          {isVisible ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}
-        </InputGroupButton>
-      </InputGroupAddon>
+          <Icon aria-hidden="true" className="text-muted size-4" />
+        </Button>
+      </InputGroup.Suffix>
     </InputGroup>
   )
 }
