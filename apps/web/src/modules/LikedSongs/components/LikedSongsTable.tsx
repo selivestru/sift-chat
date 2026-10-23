@@ -6,10 +6,10 @@ import { formatDateAdded } from '~/common/utils/formatDateAdded'
 import { formatDuration } from '~/common/utils/formatDuration'
 import { TrackRowInfo, TrackRowPlaybackControl } from '~/modules/Track'
 
-import type { LikedSong } from '../types/liked-songs.types'
+import type { LikedTrack } from '../types/liked-track.types'
 
 interface LikedSongsTableProps {
-  data: LikedSong[]
+  data: LikedTrack[]
 }
 
 export const LikedSongsTable = ({ data }: LikedSongsTableProps) => {

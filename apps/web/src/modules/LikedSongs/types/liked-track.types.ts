@@ -1,5 +1,5 @@
 import type { Track } from '~/modules/Track'
 
-export interface LikedSong extends Track {
+export interface LikedTrack extends Track {
   likedAt: string
 }
