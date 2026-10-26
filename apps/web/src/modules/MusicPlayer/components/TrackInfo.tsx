@@ -2,6 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { Fragment } from 'react/jsx-runtime'
 
 import { Show } from '~/common/ui/Show'
+import { TrackLibraryControl } from '~/modules/Track'
 import { TrackCover } from '~/modules/Track/components/TrackCover'
 
 import { usePlayerStore } from '../stores/player.store'
@@ -12,7 +13,7 @@ export const TrackInfo = () => {
   if (!currentTrack) return <div />
 
   return (
-    <div className="grid grid-cols-[auto_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-3">
+    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[auto_auto] items-center gap-x-3">
       <TrackCover
         coverUrl={currentTrack.album.imageUrl}
         title={currentTrack.album.name}
@@ -39,6 +40,7 @@ export const TrackInfo = () => {
           </Fragment>
         ))}
       </div>
+      <TrackLibraryControl trackId={currentTrack.id} likedAt={currentTrack.likedAt} />
     </div>
   )
 }

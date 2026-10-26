@@ -11,4 +11,5 @@ export interface Track {
   explicit: boolean
   audioUrl: string // TODO: temporary
   previewUrl: string | null
+  likedAt: string | null
 }

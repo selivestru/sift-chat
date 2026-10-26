@@ -7,11 +7,10 @@ import { usePlayer, usePlayerStore } from '~/modules/MusicPlayer'
 
 import type { Track } from '../types/track.types'
 
-const hideOnInteraction =
-  'group-hover/track-row:hidden group-focus-within/track-row:hidden [@media(hover:none)]:hidden'
+const hideOnInteraction = 'group-hover/track-row:hidden [@media(hover:none)]:hidden'
 
 const showOnInteraction =
-  'opacity-0 pointer-events-none group-hover/track-row:opacity-100 group-hover/track-row:pointer-events-auto group-focus-within/track-row:opacity-100 group-focus-within/track-row:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto'
+  'opacity-0 pointer-events-none group-hover/track-row:opacity-100 group-hover/track-row:pointer-events-auto focus-visible:opacity-100 focus-visible:pointer-events-auto [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto'
 
 interface TrackRowPlaybackControlProps {
   position: number
@@ -43,15 +42,28 @@ export const TrackRowPlaybackControl = ({ position, track }: TrackRowPlaybackCon
   }
 
   return (
-    <div className="relative ml-auto size-4">
-      {isPlayingCurrentTrack && <Equalizer className={cn('block', hideOnInteraction)} />}
+    <div className="group/playback-control relative ml-auto size-4">
+      {isPlayingCurrentTrack && (
+        <Equalizer
+          className={cn(
+            'block',
+            hideOnInteraction,
+            'group-has-[button:focus-visible]/playback-control:hidden',
+          )}
+        />
+      )}
 
       {(!isSelectedCurrentTrack || (isSelectedCurrentTrack && isPausedCurrentTrack)) && (
         <>
           <span
-            className={cn('block', hideOnInteraction, {
-              'text-accent': isPausedCurrentTrack,
-            })}
+            className={cn(
+              'block',
+              hideOnInteraction,
+              'group-has-[button:focus-visible]/playback-control:hidden',
+              {
+                'text-accent': isPausedCurrentTrack,
+              },
+            )}
           >
             {position}
           </span>

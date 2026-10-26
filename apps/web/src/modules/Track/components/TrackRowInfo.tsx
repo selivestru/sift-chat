@@ -31,7 +31,7 @@ export const TrackRowInfo = ({ track }: TrackRowInfoProps) => {
       >
         {track.name}
       </span>
-      <div className="text-muted truncate">
+      <div className="text-muted group-hover/track-row:text-foreground truncate">
         {track.artists.map((artist, index) => (
           <Fragment key={artist.id}>
             <Link
