@@ -31,10 +31,7 @@ export const TrackRowPlaybackControl = ({ position, track }: TrackRowPlaybackCon
   const handlePlay = () => {
     const { setCurrentTrack } = usePlayerStore.getState()
 
-    setCurrentTrack({
-      id: track.id,
-      audioUrl: track.audioUrl,
-    })
+    setCurrentTrack(track)
   }
 
   const handleResume = () => {

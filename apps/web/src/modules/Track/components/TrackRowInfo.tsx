@@ -6,6 +6,7 @@ import { Show } from '~/common/ui/Show'
 import { usePlayerStore } from '~/modules/MusicPlayer'
 
 import type { Track } from '../types/track.types'
+import { TrackCover } from './TrackCover'
 
 interface TrackRowInfoProps {
   track: Track
@@ -18,7 +19,11 @@ export const TrackRowInfo = ({ track }: TrackRowInfoProps) => {
 
   return (
     <div className="grid grid-cols-[2.5rem_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-3">
-      <div className="bg-accent row-span-2 size-10" />
+      <TrackCover
+        coverUrl={track.album.imageUrl}
+        title={track.album.name}
+        className="row-span-2 size-10"
+      />
       <span
         className={cn('truncate text-base font-medium', {
           'text-accent': isSelectedCurrentTrack,

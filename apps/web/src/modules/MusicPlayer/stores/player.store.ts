@@ -2,14 +2,13 @@ import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
+import type { Track } from '~/modules/Track'
+
 import { getVolumeFromStorage } from '../utils/volume'
 
 interface State {
   isPlaying: boolean
-  currentTrack: {
-    id: string
-    audioUrl: string
-  } | null
+  currentTrack: Track | null
   currentTime: number | null
   volume: number
   previousVolume: number

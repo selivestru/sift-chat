@@ -79,11 +79,10 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   }, [audioEngine])
 
   useEffect(() => {
-    if (!currentTrack) return
-
     currentTimeRef.current = 0
-
     setCurrentTime(0)
+
+    if (!currentTrack) return
 
     audioEngine.setSrc(currentTrack.audioUrl)
     audioEngine.play().catch((error) => {
@@ -113,7 +112,12 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
         })
       },
       pause: () => audioEngine.pause(),
-      seek: (seconds: number) => audioEngine.seek(seconds),
+      seek: (seconds: number) => {
+        audioEngine.seek(seconds)
+        const currentTime = Math.floor(seconds)
+        currentTimeRef.current = currentTime
+        setCurrentTime(currentTime)
+      },
       getCurrentTime: () => audioEngine.currentTime,
       setVolume: (volume: number) => {
         const normalizedVolume = Math.min(1, Math.max(0, volume))
