@@ -29,6 +29,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
   const setIsPlaying = usePlayerStore((state) => state.setIsPlaying)
   const setCurrentTime = usePlayerStore((state) => state.setCurrentTime)
   const setVolumeInStore = usePlayerStore((state) => state.setVolume)
+  const setPreviousVolumeInStore = usePlayerStore((state) => state.setPreviousVolume)
 
   useEffect(() => {
     const handlePlay = () => {
@@ -118,6 +119,11 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
         const normalizedVolume = Math.min(1, Math.max(0, volume))
         audioEngine.setVolume(normalizedVolume)
         setStorageItem('volume', normalizedVolume)
+
+        if (normalizedVolume > 0) {
+          setPreviousVolumeInStore(normalizedVolume)
+          setStorageItem('previousVolume', normalizedVolume)
+        }
       },
     }),
     // oxlint-disable-next-line react-hooks/exhaustive-deps

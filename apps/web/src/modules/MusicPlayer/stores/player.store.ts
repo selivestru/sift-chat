@@ -12,6 +12,7 @@ interface State {
   } | null
   currentTime: number | null
   volume: number
+  previousVolume: number
 }
 
 interface Actions {
@@ -19,6 +20,7 @@ interface Actions {
   setCurrentTrack: (track: State['currentTrack']) => void
   setCurrentTime: (time: State['currentTime']) => void
   setVolume: (volume: number) => void
+  setPreviousVolume: (volume: number) => void
 }
 
 type Store = State & Actions
@@ -30,11 +32,14 @@ export const usePlayerStore = create<Store>()(
       currentTrack: null,
       currentTime: null,
       volume: getVolumeFromStorage(),
+      previousVolume: getVolumeFromStorage('previousVolume'),
 
       setIsPlaying: (isPlaying) => set({ isPlaying }, undefined, 'change is playing'),
       setCurrentTrack: (currentTrack) => set({ currentTrack }, undefined, 'change current track'),
       setCurrentTime: (currentTime) => set({ currentTime }, undefined, 'change current time'),
       setVolume: (volume) => set({ volume }, undefined, 'change volume'),
+      setPreviousVolume: (volume) =>
+        set({ previousVolume: volume }, undefined, 'change previous volume'),
     })),
     {
       name: 'player',
