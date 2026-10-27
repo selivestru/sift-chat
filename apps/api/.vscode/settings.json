@@ -14,5 +14,8 @@
   },
   "search.exclude": {
     "src/generated/**/*": true
-  }
+  },
+  "js/ts.experimental.useTsgo": true,
+  "js/ts.tsdk.path": "./node_modules/tsrs/tsdk",
+  "js/ts.trace.server": "verbose"
 }
