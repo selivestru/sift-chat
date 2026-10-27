@@ -12,8 +12,8 @@ interface LikedSongsTableProps {
 export const LikedSongsTable = ({ data }: LikedSongsTableProps) => {
   return (
     <Table className="text-sm">
-      <Table.ScrollContainer>
-        <Table.Content aria-label="Liked songs table" className="w-full min-w-208 table-fixed">
+      <Table.ScrollContainer className="overflow-visible">
+        <Table.Content aria-label="Liked songs table" className="table-fixed">
           <Table.Header className="sticky top-0 z-10">
             <Table.Column isRowHeader className="w-16 text-right">
               #

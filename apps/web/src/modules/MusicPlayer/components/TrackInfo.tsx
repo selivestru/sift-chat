@@ -13,34 +13,36 @@ export const TrackInfo = () => {
   if (!currentTrack) return <div />
 
   return (
-    <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[auto_auto] items-center gap-x-3">
+    <div className="grid grid-cols-[auto_minmax(0,max-content)_auto] items-center justify-start gap-x-3">
       <TrackCover
         coverUrl={currentTrack.album.imageUrl}
         title={currentTrack.album.name}
-        className="row-span-2 size-12"
+        className="size-12"
       />
-      <Link
-        to="/album/$id"
-        params={{ id: currentTrack.album.id }}
-        className="w-fit truncate text-base font-medium hover:underline"
-      >
-        {currentTrack.name}
-      </Link>
-      <div className="text-muted truncate text-sm">
-        {currentTrack.artists.map((artist, index) => (
-          <Fragment key={artist.id}>
-            <Link
-              to="/artist/$id"
-              params={{ id: artist.id }}
-              className="hover:text-foreground hover:underline"
-            >
-              {artist.name}
-            </Link>
-            <Show when={index !== currentTrack.artists.length - 1}>{', '}</Show>
-          </Fragment>
-        ))}
+      <div>
+        <Link
+          to="/album/$id"
+          params={{ id: currentTrack.album.id }}
+          className="block max-w-full truncate text-base font-medium hover:underline"
+        >
+          {currentTrack.name}
+        </Link>
+        <div className="text-muted truncate text-sm">
+          {currentTrack.artists.map((artist, index) => (
+            <Fragment key={artist.id}>
+              <Link
+                to="/artist/$id"
+                params={{ id: artist.id }}
+                className="hover:text-foreground hover:underline"
+              >
+                {artist.name}
+              </Link>
+              <Show when={index !== currentTrack.artists.length - 1}>{', '}</Show>
+            </Fragment>
+          ))}
+        </div>
       </div>
-      <TrackLibraryControl trackId={currentTrack.id} likedAt={currentTrack.likedAt} />
+      <TrackLibraryControl trackId={currentTrack.id} isLiked={!!currentTrack.likedAt} />
     </div>
   )
 }

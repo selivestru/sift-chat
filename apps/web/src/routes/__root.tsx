@@ -11,7 +11,7 @@ interface RouterContext {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context }) => {
-    const user = await context.queryClient.query(currentUserOptions)
+    const user = await context.queryClient.query(currentUserOptions).catch(() => null)
     return { user }
   },
   component: RootComponent,

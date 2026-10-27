@@ -50,7 +50,7 @@ export const LikedSongsTableRow = ({ track, index }: LikedSongsTableRowProps) =>
         <Link
           to="/album/$id"
           params={{ id: track.album.id }}
-          className="text-muted hover:text-foreground group-hover/track-row:text-foreground block w-fit truncate hover:underline"
+          className="text-muted hover:text-foreground group-hover/track-row:text-foreground block w-fit max-w-full truncate hover:underline"
         >
           {track.album.name}
         </Link>
@@ -58,7 +58,7 @@ export const LikedSongsTableRow = ({ track, index }: LikedSongsTableRowProps) =>
       <Table.Cell>{track?.likedAt ? formatDateAdded(track.likedAt) : '—'}</Table.Cell>
       <Table.Cell className="text-right">
         <Show when={isHovered}>
-          <TrackLibraryControl trackId={track.id} likedAt={null} />
+          <TrackLibraryControl trackId={track.id} isLiked={false} />
         </Show>
       </Table.Cell>
       <Table.Cell className="text-right tabular-nums">

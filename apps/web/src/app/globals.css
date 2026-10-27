@@ -27,6 +27,8 @@
   --overlay: oklch(100% 0.0006 148.67);
   --overlay-foreground: oklch(21.03% 0.002 148.67);
   --scrollbar: oklch(87.1% 0.002 148.67);
+  --scrollbar-thumb: var(--scrollbar);
+  --scrollbar-track: var(--surface-secondary);
   --segment: oklch(100% 0.002 148.67);
   --segment-foreground: oklch(21.03% 0.002 148.67);
   --separator: oklch(92% 0.002 148.67);
@@ -69,6 +71,8 @@
   --overlay: oklch(21.03% 0.004 148.67);
   --overlay-foreground: oklch(99.11% 0.002 148.67);
   --scrollbar: oklch(70.5% 0.002 148.67);
+  --scrollbar-thumb: var(--scrollbar);
+  --scrollbar-track: var(--surface-secondary);
   --segment: oklch(39.64% 0.002 148.67);
   --segment-foreground: oklch(99.11% 0.002 148.67);
   --separator: oklch(25% 0.002 148.67);
