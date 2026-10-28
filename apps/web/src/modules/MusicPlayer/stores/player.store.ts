@@ -32,6 +32,8 @@ interface CurrentTrack extends QueueItem {
 
 interface State {
   isPlaying: boolean
+  isShuffleEnabled: boolean
+  contextOrder: { originalTracks: Track[]; positions: number[] } | null
   repeatMode: z.infer<typeof repeatModeSchema>
   currentTrack: CurrentTrack | null
   currentTime: number | null
@@ -43,6 +45,7 @@ interface State {
 
 interface Actions {
   setIsPlaying: (isPlaying: boolean) => void
+  toggleShuffle: () => void
   cycleRepeatMode: () => void
   setCurrentTime: (time: State['currentTime']) => void
   setVolume: (volume: number) => void
@@ -56,6 +59,14 @@ interface Actions {
 }
 
 type Store = State & Actions
+
+const shuffleSuffix = (context: PlaybackContext, positions: number[]) => {
+  for (let i = context.tracks.length - 1; i > context.nextIndex; i--) {
+    const j = context.nextIndex + Math.floor(Math.random() * (i - context.nextIndex + 1))
+    ;[context.tracks[i], context.tracks[j]] = [context.tracks[j], context.tracks[i]]
+    ;[positions[i], positions[j]] = [positions[j], positions[i]]
+  }
+}
 
 export const selectCanGoNext = (state: State) =>
   state.queue.length > 0 ||
@@ -80,6 +91,8 @@ export const usePlayerStore = create<Store>()(
   devtools(
     immer((set) => ({
       isPlaying: false,
+      isShuffleEnabled: getStorageItem('isShuffleEnabled', z.boolean(), false),
+      contextOrder: null,
       repeatMode: getStorageItem('repeatMode', repeatModeSchema, 'off'),
       currentTrack: null,
       currentTime: null,
@@ -89,6 +102,33 @@ export const usePlayerStore = create<Store>()(
       context: null,
 
       setIsPlaying: (isPlaying) => set({ isPlaying }, undefined, 'change is playing'),
+      toggleShuffle: () =>
+        set(
+          (state) => {
+            state.isShuffleEnabled = !state.isShuffleEnabled
+            setStorageItem('isShuffleEnabled', state.isShuffleEnabled)
+            if (!state.context) return
+
+            if (state.isShuffleEnabled) {
+              state.contextOrder = {
+                originalTracks: [...state.context.tracks],
+                positions: state.context.tracks.map((_, index) => index),
+              }
+              shuffleSuffix(state.context, state.contextOrder.positions)
+            } else if (state.contextOrder) {
+              const anchor = state.context.nextIndex - 1
+              const originalIndex = anchor >= 0 ? state.contextOrder.positions[anchor] : -1
+              state.context.tracks = state.contextOrder.originalTracks
+              state.context.nextIndex = originalIndex + 1
+              if (state.currentTrack && state.currentTrack.contextIndex !== null) {
+                state.currentTrack.contextIndex = originalIndex
+              }
+              state.contextOrder = null
+            }
+          },
+          undefined,
+          'toggle shuffle',
+        ),
       cycleRepeatMode: () =>
         set(
           (state) => {
@@ -119,11 +159,34 @@ export const usePlayerStore = create<Store>()(
           undefined,
           'remove from queue',
         ),
-      setContext: (context) => set({ context }, undefined, 'change playback context'),
+      setContext: (context) =>
+        set(
+          (state) => {
+            state.context = context ? { ...context, tracks: [...context.tracks] } : null
+            state.contextOrder = null
+            if (context && state.isShuffleEnabled) {
+              state.contextOrder = {
+                originalTracks: [...context.tracks],
+                positions: context.tracks.map((_, index) => index),
+              }
+              shuffleSuffix(state.context!, state.contextOrder.positions)
+            }
+          },
+          undefined,
+          'change playback context',
+        ),
       startContext: (source, tracks, startIndex) =>
         set(
           (state) => {
-            state.context = { source, tracks, nextIndex: startIndex + 1 }
+            state.context = { source, tracks: [...tracks], nextIndex: startIndex + 1 }
+            state.contextOrder = null
+            if (state.isShuffleEnabled) {
+              state.contextOrder = {
+                originalTracks: [...tracks],
+                positions: tracks.map((_, index) => index),
+              }
+              shuffleSuffix(state.context, state.contextOrder.positions)
+            }
             state.currentTrack = {
               id: crypto.randomUUID(),
               track: tracks[startIndex],

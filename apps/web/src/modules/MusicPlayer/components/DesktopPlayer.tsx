@@ -4,6 +4,7 @@ import { PlayPauseButton } from './PlayPauseButton'
 import { PreviousTrackButton } from './PreviousTrackButton'
 import { QueueSidebarToggle } from './QueueSidebarToggle'
 import { RepeatButton } from './RepeatButton'
+import { ShuffleButton } from './ShuffleButton'
 import { TrackInfo } from './TrackInfo'
 import { VolumeControl } from './VolumeControl'
 
@@ -13,6 +14,7 @@ export const DesktopPlayer = () => {
       <TrackInfo />
       <div className="flex flex-col items-center gap-2">
         <div className="flex items-center gap-2">
+          <ShuffleButton />
           <PreviousTrackButton />
           <PlayPauseButton />
           <NextTrackButton />

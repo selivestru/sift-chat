@@ -25,7 +25,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
 
   const currentTimeRef = useRef(0)
 
-  const currentTrack = usePlayerStore((state) => state.currentTrack)
+  const currentTrackId = usePlayerStore((state) => state.currentTrack?.id)
 
   const setIsPlaying = usePlayerStore((state) => state.setIsPlaying)
   const setCurrentTime = usePlayerStore((state) => state.setCurrentTime)
@@ -94,7 +94,8 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     currentTimeRef.current = 0
     setCurrentTime(0)
 
-    if (!currentTrack) return
+    const currentTrack = usePlayerStore.getState().currentTrack
+    if (!currentTrack || currentTrack.id !== currentTrackId) return
 
     audioEngine.setSrc(currentTrack.track.audioUrl)
     audioEngine.play().catch((error) => {
@@ -106,7 +107,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
       currentTimeRef.current = 0
     }
     // oxlint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioEngine, currentTrack])
+  }, [audioEngine, currentTrackId])
 
   useEffect(() => {
     return () => {

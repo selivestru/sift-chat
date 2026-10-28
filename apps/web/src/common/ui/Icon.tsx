@@ -19,6 +19,7 @@ export type IconName =
   | 'pause'
   | 'next'
   | 'previous'
+  | 'shuffle'
   | 'repeat'
   | 'repeat-one'
 
