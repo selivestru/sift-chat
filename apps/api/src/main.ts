@@ -1,15 +1,13 @@
 import { StandardSchemaValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { NestFactory } from '@nestjs/core'
-import { NestExpressApplication } from '@nestjs/platform-express'
+import { NestNodeApplication, NodeAdapter } from '@nestjs/platform-node'
 
 import { AppModule } from './app.module.js'
 import { EnvConfig } from './config/env.config.js'
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(AppModule)
-
-  app.set('trust proxy', 1)
+  const app = await NestFactory.create<NestNodeApplication>(AppModule, new NodeAdapter())
 
   const configService = app.get(ConfigService<EnvConfig, true>)
 
