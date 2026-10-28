@@ -27,11 +27,12 @@ export const LikedSongsTable = ({ data }: LikedSongsTableProps) => {
                 <Clock className="size-5" />
               </div>
             </Table.Column>
+            <Table.Column className="w-16" />
           </Table.Header>
           <Table.Body items={data}>
             {(track) => {
               const index = data.findIndex((item) => item.id === track.id)
-              return <LikedSongsTableRow track={track} index={index} />
+              return <LikedSongsTableRow index={index} track={track} tracks={data} />
             }}
           </Table.Body>
         </Table.Content>

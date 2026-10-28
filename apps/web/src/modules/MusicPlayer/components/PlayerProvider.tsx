@@ -6,7 +6,7 @@ import { AudioEngine } from '../core/audioEngine'
 import { usePlayerStore } from '../stores/player.store'
 import { getVolumeFromStorage } from '../utils/volume'
 
-interface PlayerProviderContext {
+interface PlayerContext {
   play: () => void
   pause: () => void
   seek: (seconds: number) => void
@@ -14,18 +14,19 @@ interface PlayerProviderContext {
   setVolume: (volume: number) => void
 }
 
-export const PlayerContext = createContext<PlayerProviderContext | null>(null)
+export const PlayerContext = createContext<PlayerContext | null>(null)
 
 interface PlayerProviderProps {
   children: React.ReactNode
 }
 
 export const PlayerProvider = ({ children }: PlayerProviderProps) => {
-  const [audioEngine] = useState(() => new AudioEngine(getVolumeFromStorage()))
+  const [audioEngine] = useState(() => new AudioEngine(getVolumeFromStorage('volume')))
 
   const currentTimeRef = useRef(0)
 
   const currentTrack = usePlayerStore((state) => state.currentTrack)
+
   const setIsPlaying = usePlayerStore((state) => state.setIsPlaying)
   const setCurrentTime = usePlayerStore((state) => state.setCurrentTime)
   const setVolumeInStore = usePlayerStore((state) => state.setVolume)
@@ -54,7 +55,9 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     }
 
     const handleEnded = () => {
-      setIsPlaying(false)
+      if (!usePlayerStore.getState().next()) {
+        setIsPlaying(false)
+      }
     }
 
     const handleError = () => {
@@ -84,7 +87,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
 
     if (!currentTrack) return
 
-    audioEngine.setSrc(currentTrack.audioUrl)
+    audioEngine.setSrc(currentTrack.track.audioUrl)
     audioEngine.play().catch((error) => {
       console.error('Failed to play audio', error)
       setIsPlaying(false)
@@ -103,7 +106,7 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     }
   }, [audioEngine, setIsPlaying])
 
-  const value = useMemo<PlayerProviderContext>(
+  const value = useMemo<PlayerContext>(
     () => ({
       play: () => {
         audioEngine.play().catch((error) => {

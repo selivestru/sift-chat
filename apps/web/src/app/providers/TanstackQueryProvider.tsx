@@ -19,7 +19,7 @@ export const TanstackQueryProvider = ({ children }: TanstackQueryProviderProps) 
   return (
     <QueryClientProvider client={client}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-right" />
+      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" />
     </QueryClientProvider>
   )
 }

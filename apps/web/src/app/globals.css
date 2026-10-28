@@ -92,10 +92,12 @@
   --color-accent-muted: var(--accent-muted);
 }
 
-@layer base {
-  body {
-    @apply bg-background text-foreground font-sans text-base font-normal antialiased;
-  }
+html {
+  @apply select-none;
+}
+
+body {
+  @apply bg-background text-foreground font-sans text-base font-normal antialiased;
 }
 
 @keyframes equalizer-bounce {

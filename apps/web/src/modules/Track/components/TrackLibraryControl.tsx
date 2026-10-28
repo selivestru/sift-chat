@@ -26,6 +26,7 @@ export const TrackLibraryControl = ({ isLiked: initialIsLiked }: TrackLibraryCon
       aria-pressed={isLiked}
       variant="ghost"
       size="md"
+      className="shrink-0"
       onPress={handlePress}
       onDoubleClick={handleStopPropagation}
     >

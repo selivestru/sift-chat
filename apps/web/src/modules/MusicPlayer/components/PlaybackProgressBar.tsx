@@ -13,7 +13,7 @@ export const PlaybackProgressBar = () => {
   const [showRemaining, setShowRemaining] = useState(false)
 
   const currentTrackId = currentTrack?.id ?? null
-  const duration = currentTrack ? currentTrack.durationMs / 1000 : null
+  const duration = currentTrack ? currentTrack.track.durationMs / 1000 : null
   const isDurationAvailable = duration !== null && Number.isFinite(duration) && duration > 0
   const previewTime = preview?.trackId === currentTrackId ? preview.time : null
   const displayedTime = previewTime ?? currentTime ?? 0

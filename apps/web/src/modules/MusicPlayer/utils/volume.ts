@@ -10,6 +10,6 @@ export const normalizeVolumeForAudio = (volumePercent: number) => clamp(volumePe
 export const normalizeVolumeForUI = (audioVolume: number) =>
   Math.round(clamp(audioVolume, 0, 1) * 100)
 
-export const getVolumeFromStorage = (key: 'volume' | 'previousVolume' = 'volume') => {
+export const getVolumeFromStorage = (key: 'volume' | 'previousVolume') => {
   return getStorageItem(key, volumeSchema, 0.5)
 }

@@ -38,7 +38,7 @@ export const VolumeControl = () => {
   const volumePercent = normalizeVolumeForUI(volume)
 
   return (
-    <div className="flex items-center justify-end-safe gap-2">
+    <div className="flex items-center gap-2">
       <Button isIconOnly variant="ghost" onPress={handleToggleVolume}>
         {getVolumeIcon()}
       </Button>

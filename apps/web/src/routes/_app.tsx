@@ -2,6 +2,8 @@ import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 import { LeftSidebar } from '~/modules/LeftSidebar'
 import { MusicPlayer, PlayerProvider } from '~/modules/MusicPlayer'
+import { RightSidebar } from '~/modules/RightSidebar'
+import { QueueSidebarProvider } from '~/modules/RightSidebar/modules/Queue'
 
 export const Route = createFileRoute('/_app')({
   component: RouteComponent,
@@ -10,20 +12,19 @@ export const Route = createFileRoute('/_app')({
 function RouteComponent() {
   return (
     <PlayerProvider>
-      <div className="grid h-svh grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[minmax(0,1fr)_auto] overflow-hidden">
-        <LeftSidebar />
+      <QueueSidebarProvider>
+        <div className="grid h-svh grid-cols-[auto_minmax(0,1fr)_auto] grid-rows-[minmax(0,1fr)_auto] overflow-hidden">
+          <LeftSidebar />
 
-        {/* Main content */}
-        <main className="scrollbar-thin overflow-y-auto overscroll-contain">
-          <Outlet />
-        </main>
+          <main className="scrollbar-thin overflow-y-auto overscroll-contain">
+            <Outlet />
+          </main>
 
-        {/* Right sidebar */}
-        <aside className="border-l-border w-[300px] overflow-y-auto overscroll-contain border-l"></aside>
+          <RightSidebar />
 
-        {/* Player */}
-        <MusicPlayer />
-      </div>
+          <MusicPlayer />
+        </div>
+      </QueueSidebarProvider>
     </PlayerProvider>
   )
 }

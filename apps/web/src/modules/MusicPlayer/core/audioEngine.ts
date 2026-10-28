@@ -1,7 +1,6 @@
 export class AudioEngine {
   private audio = new Audio()
   private abortController = new AbortController()
-  private cancelPendingSeek: (() => void) | null = null
 
   constructor(volume: number) {
     this.audio.volume = volume
@@ -20,7 +19,6 @@ export class AudioEngine {
   }
 
   public setSrc(src: string) {
-    this.cancelPendingSeek?.()
     this.audio.src = src
   }
 
@@ -59,7 +57,6 @@ export class AudioEngine {
   }
 
   public destroy() {
-    this.cancelPendingSeek?.()
     this.abortController.abort()
     this.abortController = new AbortController()
 

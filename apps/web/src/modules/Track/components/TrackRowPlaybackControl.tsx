@@ -15,23 +15,22 @@ const showOnInteraction =
 interface TrackRowPlaybackControlProps {
   position: number
   track: Track
+  onPlay: () => void
 }
 
-export const TrackRowPlaybackControl = ({ position, track }: TrackRowPlaybackControlProps) => {
+export const TrackRowPlaybackControl = ({
+  position,
+  track,
+  onPlay,
+}: TrackRowPlaybackControlProps) => {
   const { play, pause } = usePlayer()
 
   const isPlaying = usePlayerStore((state) => state.isPlaying)
   const currentTrack = usePlayerStore((state) => state.currentTrack)
 
-  const isSelectedCurrentTrack = currentTrack && currentTrack.id === track.id
+  const isSelectedCurrentTrack = currentTrack?.track.id === track.id
   const isPlayingCurrentTrack = isSelectedCurrentTrack && isPlaying
   const isPausedCurrentTrack = isSelectedCurrentTrack && !isPlaying
-
-  const handlePlay = () => {
-    const { setCurrentTrack } = usePlayerStore.getState()
-
-    setCurrentTrack(track)
-  }
 
   const handleResume = () => {
     play()
@@ -72,7 +71,7 @@ export const TrackRowPlaybackControl = ({ position, track }: TrackRowPlaybackCon
             aria-label={`${isSelectedCurrentTrack ? 'Resume' : 'Play'} ${track.name}`}
             variant="ghost"
             className={cn('absolute top-1/2 -right-2.5 -translate-y-1/2', showOnInteraction)}
-            onPress={isSelectedCurrentTrack ? handleResume : handlePlay}
+            onPress={isSelectedCurrentTrack ? handleResume : onPlay}
           >
             <Play weight="Filled" />
           </Button>

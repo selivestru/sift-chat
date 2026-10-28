@@ -1,12 +1,9 @@
-import { Table } from '@heroui/react'
+import { Button, Table } from '@heroui/react'
 import { Link } from '@tanstack/react-router'
-import { cn } from 'cn'
-import { useState } from 'react'
 
-import { Show } from '~/common/ui/Show'
 import { formatDateAdded } from '~/common/utils/formatDateAdded'
 import { formatDuration } from '~/common/utils/formatDuration'
-import { usePlayer, usePlayerStore } from '~/modules/MusicPlayer'
+import { usePlayerStore } from '~/modules/MusicPlayer'
 import {
   TrackLibraryControl,
   TrackRowInfo,
@@ -15,33 +12,36 @@ import {
 } from '~/modules/Track'
 
 interface LikedSongsTableRowProps {
-  track: Track
   index: number
+  track: Track
+  tracks: Track[]
 }
 
-export const LikedSongsTableRow = ({ track, index }: LikedSongsTableRowProps) => {
-  const [isHovered, setIsHovered] = useState(false)
-
-  const { seek } = usePlayer()
-
+export const LikedSongsTableRow = ({ index, track, tracks }: LikedSongsTableRowProps) => {
   const handlePlay = () => {
-    const { setCurrentTrack } = usePlayerStore.getState()
-    setCurrentTrack(track)
-    seek(0)
+    const { startContext } = usePlayerStore.getState()
+    startContext(
+      {
+        type: 'liked-songs',
+      },
+      tracks,
+      index,
+    )
+  }
+
+  const addToQueue = () => {
+    const { addToQueue } = usePlayerStore.getState()
+    addToQueue({ id: crypto.randomUUID(), track })
   }
 
   return (
     <Table.Row
       key={track.id}
-      className={cn('group/track-row', {
-        'hover:bg-surface-tertiary': isHovered,
-      })}
+      className="group/track-row hover:bg-surface-tertiary"
       onDoubleClick={handlePlay}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       <Table.Cell className="text-right tabular-nums">
-        <TrackRowPlaybackControl position={index + 1} track={track} />
+        <TrackRowPlaybackControl position={index + 1} track={track} onPlay={handlePlay} />
       </Table.Cell>
       <Table.Cell>
         <TrackRowInfo track={track} />
@@ -57,12 +57,13 @@ export const LikedSongsTableRow = ({ track, index }: LikedSongsTableRowProps) =>
       </Table.Cell>
       <Table.Cell>{track?.likedAt ? formatDateAdded(track.likedAt) : '—'}</Table.Cell>
       <Table.Cell className="text-right">
-        <Show when={isHovered}>
-          <TrackLibraryControl trackId={track.id} isLiked={false} />
-        </Show>
+        <TrackLibraryControl trackId={track.id} isLiked={false} />
       </Table.Cell>
       <Table.Cell className="text-right tabular-nums">
         {formatDuration(track.durationMs)}
+      </Table.Cell>
+      <Table.Cell>
+        <Button onPress={addToQueue}>Add</Button>
       </Table.Cell>
     </Table.Row>
   )

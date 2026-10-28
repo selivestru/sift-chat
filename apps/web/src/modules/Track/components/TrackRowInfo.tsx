@@ -1,12 +1,11 @@
-import { Link } from '@tanstack/react-router'
 import { cn } from 'cn'
-import { Fragment } from 'react/jsx-runtime'
 
-import { Show } from '~/common/ui/Show'
+import { ArtistLinks } from '~/modules/Artist'
 import { usePlayerStore } from '~/modules/MusicPlayer'
 
 import type { Track } from '../types/track.types'
 import { TrackCover } from './TrackCover'
+import { TrackExplicitBadge } from './TrackExplicitBadge'
 
 interface TrackRowInfoProps {
   track: Track
@@ -15,10 +14,10 @@ interface TrackRowInfoProps {
 export const TrackRowInfo = ({ track }: TrackRowInfoProps) => {
   const currentTrack = usePlayerStore((state) => state.currentTrack)
 
-  const isSelectedCurrentTrack = currentTrack && currentTrack.id === track.id
+  const isSelectedCurrentTrack = currentTrack?.track.id === track.id
 
   return (
-    <div className="grid grid-cols-[2.5rem_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-3">
+    <div className="grid grid-cols-[auto_minmax(0,1fr)] grid-rows-[auto_auto] items-center gap-x-3">
       <TrackCover
         coverUrl={track.album.imageUrl}
         title={track.album.name}
@@ -32,18 +31,7 @@ export const TrackRowInfo = ({ track }: TrackRowInfoProps) => {
         {track.name}
       </span>
       <div className="text-muted group-hover/track-row:text-foreground truncate">
-        {track.artists.map((artist, index) => (
-          <Fragment key={artist.id}>
-            <Link
-              to="/artist/$id"
-              params={{ id: artist.id }}
-              className="hover:text-foreground hover:underline"
-            >
-              {artist.name}
-            </Link>
-            <Show when={index !== track.artists.length - 1}>{', '}</Show>
-          </Fragment>
-        ))}
+        <TrackExplicitBadge explicit={track.explicit} /> <ArtistLinks artists={track.artists} />
       </div>
     </div>
   )
