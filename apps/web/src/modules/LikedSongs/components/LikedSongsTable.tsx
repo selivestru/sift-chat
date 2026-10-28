@@ -15,19 +15,19 @@ export const LikedSongsTable = ({ data }: LikedSongsTableProps) => {
       <Table.ScrollContainer className="overflow-visible">
         <Table.Content aria-label="Liked songs table" className="table-fixed">
           <Table.Header className="sticky top-0 z-10">
-            <Table.Column isRowHeader className="w-16 text-right">
+            <Table.Column isRowHeader className="w-15 text-right">
               #
             </Table.Column>
-            <Table.Column className="w-1/3">Title</Table.Column>
-            <Table.Column className="w-1/3">Album</Table.Column>
-            <Table.Column className="w-48">Date added</Table.Column>
-            <Table.Column className="w-12" />
+            <Table.Column className="w-2/5">Title</Table.Column>
+            <Table.Column className="w-1/4">Album</Table.Column>
+            <Table.Column className="w-32">Date added</Table.Column>
+            <Table.Column className="w-9" />
             <Table.Column className="w-16 text-right">
               <div className="flex justify-end">
                 <Icon name="clock" className="size-5" />
               </div>
             </Table.Column>
-            <Table.Column className="w-16" />
+            <Table.Column className="w-20" />
           </Table.Header>
           <Table.Body items={data}>
             {(track) => {
