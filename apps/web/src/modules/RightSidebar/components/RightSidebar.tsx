@@ -20,7 +20,7 @@ export const RightSidebar = () => {
     <aside
       className={cn(
         'border-l-border overflow-y-auto overscroll-contain border-l',
-        isCollapsed ? 'w-fit' : 'w-100',
+        isCollapsed ? 'w-fit content-center' : 'w-100',
       )}
     >
       {isOpen ? (
