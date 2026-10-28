@@ -1,8 +1,8 @@
 import { Button } from '@heroui/react'
 import { cn } from 'cn'
-import { Pause, Play } from 'reicon-react'
 
 import { Equalizer } from '~/common/ui/Equalizer'
+import { Icon } from '~/common/ui/Icon'
 import { usePlayer, usePlayerStore } from '~/modules/MusicPlayer'
 
 import type { Track } from '../types/track.types'
@@ -73,7 +73,7 @@ export const TrackRowPlaybackControl = ({
             className={cn('absolute top-1/2 -right-2.5 -translate-y-1/2', showOnInteraction)}
             onPress={isSelectedCurrentTrack ? handleResume : onPlay}
           >
-            <Play weight="Filled" />
+            <Icon name="play" />
           </Button>
         </>
       )}
@@ -86,7 +86,7 @@ export const TrackRowPlaybackControl = ({
           className={cn('absolute top-1/2 -right-2.5 -translate-y-1/2', showOnInteraction)}
           onPress={handlePause}
         >
-          <Pause weight="Filled" />
+          <Icon name="pause" />
         </Button>
       )}
     </div>

@@ -8,7 +8,7 @@
 .default,
 [data-theme='light'],
 [data-theme='default'] {
-  --accent: oklch(76.97% 0.2124 148.67);
+  --accent: oklch(74% 0.2124 148.67);
   --accent-muted: color-mix(in oklch, var(--accent) 40%, black 60%);
   --accent-foreground: oklch(15% 0.03 148.67);
   --background: oklch(97.02% 0.002 148.67);
@@ -21,7 +21,7 @@
   --field-border: transparent;
   --field-foreground: oklch(21.03% 0.002 148.67);
   --field-placeholder: oklch(55.17% 0.004 148.67);
-  --focus: oklch(76.97% 0.2124 148.67);
+  --focus: oklch(74% 0.2124 148.67);
   --foreground: oklch(21.03% 0.002 148.67);
   --muted: oklch(55.17% 0.004 148.67);
   --overlay: oklch(100% 0.0006 148.67);
@@ -52,7 +52,7 @@
 .dark,
 [data-theme='dark'] {
   color-scheme: dark;
-  --accent: oklch(76.97% 0.2124 148.67);
+  --accent: oklch(74% 0.2124 148.67);
   --accent-muted: color-mix(in oklch, var(--accent) 40%, black 60%);
   --accent-foreground: oklch(15% 0.03 148.67);
   --background: oklch(12% 0.002 148.67);
@@ -65,7 +65,7 @@
   --field-border: transparent;
   --field-foreground: oklch(99.11% 0.002 148.67);
   --field-placeholder: oklch(70.5% 0.004 148.67);
-  --focus: oklch(76.97% 0.2124 148.67);
+  --focus: oklch(74% 0.2124 148.67);
   --foreground: oklch(99.11% 0.002 148.67);
   --muted: oklch(70.5% 0.004 148.67);
   --overlay: oklch(21.03% 0.004 148.67);

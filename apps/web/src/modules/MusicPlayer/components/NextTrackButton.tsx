@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { Next } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 import { selectCanGoNext, usePlayerStore } from '../stores/player.store'
 
@@ -19,7 +20,7 @@ export const NextTrackButton = () => {
       onPress={handleNextTrack}
       isDisabled={!canGoNext}
     >
-      <Next weight="Filled" className="size-5" />
+      <Icon name="next" />
     </Button>
   )
 }

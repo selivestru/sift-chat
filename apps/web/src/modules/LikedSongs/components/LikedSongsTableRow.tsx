@@ -57,7 +57,7 @@ export const LikedSongsTableRow = ({ index, track, tracks }: LikedSongsTableRowP
       </Table.Cell>
       <Table.Cell>{track?.likedAt ? formatDateAdded(track.likedAt) : '—'}</Table.Cell>
       <Table.Cell className="text-right">
-        <TrackLibraryControl trackId={track.id} isLiked={false} />
+        <TrackLibraryControl trackId={track.id} isLiked={!!track.likedAt} />
       </Table.Cell>
       <Table.Cell className="text-right tabular-nums">
         {formatDuration(track.durationMs)}

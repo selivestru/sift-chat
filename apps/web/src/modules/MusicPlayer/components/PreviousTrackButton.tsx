@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { Previous } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 import { selectCanGoPrevious, usePlayerStore } from '../stores/player.store'
 
@@ -19,7 +20,7 @@ export const PreviousTrackButton = () => {
       onPress={handlePreviousTrack}
       isDisabled={!canGoPrevious}
     >
-      <Previous weight="Filled" className="size-5" />
+      <Icon name="previous" />
     </Button>
   )
 }

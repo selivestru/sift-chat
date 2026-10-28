@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { ArrowLeft2, ArrowRight2 } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 import { NowPlayingTrackInfo } from './NowPlayingTrackInfo'
 
@@ -9,12 +10,10 @@ interface NowPlayingSidebarProps {
 }
 
 export const NowPlayingSidebar = ({ isCollapsed, onToggleCollapse }: NowPlayingSidebarProps) => {
-  const ArrowIcon = isCollapsed ? ArrowLeft2 : ArrowRight2
-
   return (
     <div className="space-y-4 p-4">
       <Button isIconOnly variant="ghost" onPress={onToggleCollapse} aria-label="Toggle sidebar">
-        <ArrowIcon className="size-6" />
+        <Icon name={isCollapsed ? 'chevron-left' : 'chevron-right'} />
       </Button>
 
       {!isCollapsed && <NowPlayingTrackInfo />}

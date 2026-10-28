@@ -55,7 +55,16 @@ export const PlayerProvider = ({ children }: PlayerProviderProps) => {
     }
 
     const handleEnded = () => {
-      if (!usePlayerStore.getState().next()) {
+      const { repeatMode, currentTrack, next } = usePlayerStore.getState()
+      if (repeatMode === 'one' && currentTrack) {
+        audioEngine.seek(0)
+        currentTimeRef.current = 0
+        setCurrentTime(0)
+        audioEngine.play().catch((error) => {
+          console.error('Failed to play audio', error)
+          setIsPlaying(false)
+        })
+      } else if (!next()) {
         setIsPlaying(false)
       }
     }

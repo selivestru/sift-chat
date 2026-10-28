@@ -1,6 +1,6 @@
 import { Table } from '@heroui/react'
-import { Clock } from 'reicon-react'
 
+import { Icon } from '~/common/ui/Icon'
 import type { Track } from '~/modules/Track'
 
 import { LikedSongsTableRow } from './LikedSongsTableRow'
@@ -24,7 +24,7 @@ export const LikedSongsTable = ({ data }: LikedSongsTableProps) => {
             <Table.Column className="w-12" />
             <Table.Column className="w-16 text-right">
               <div className="flex justify-end">
-                <Clock className="size-5" />
+                <Icon name="clock" className="size-5" />
               </div>
             </Table.Column>
             <Table.Column className="w-16" />

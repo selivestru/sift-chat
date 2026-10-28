@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { X } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 import { useQueueSidebar } from '../hooks/useQueueSidebar'
 import { NextInQueue } from './NextInQueue'
@@ -15,7 +16,7 @@ export const QueueSidebar = () => {
         <h1 className="text-lg font-bold">Queue</h1>
 
         <Button isIconOnly variant="ghost" onPress={toggle} aria-label="Close queue">
-          <X className="size-5" />
+          <Icon name="close" className="size-5" />
         </Button>
       </header>
 

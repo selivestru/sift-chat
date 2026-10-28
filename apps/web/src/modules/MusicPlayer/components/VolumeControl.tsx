@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { VolumeCross, VolumeDown, VolumeHigh, VolumeLow2, type IconComponent } from 'reicon-react'
+
+import { Icon, type IconName } from '~/common/ui/Icon'
 
 import { usePlayer } from '../hooks/usePlayer'
 import { usePlayerStore } from '../stores/player.store'
@@ -16,19 +17,19 @@ export const VolumeControl = () => {
   }
 
   const getVolumeIcon = () => {
-    let Icon: IconComponent
+    let icon: IconName
 
     if (volume >= 0.75) {
-      Icon = VolumeHigh
+      icon = 'volume-high'
     } else if (volume >= 0.25) {
-      Icon = VolumeLow2
+      icon = 'volume-medium'
     } else if (volume > 0) {
-      Icon = VolumeDown
+      icon = 'volume-low'
     } else {
-      Icon = VolumeCross
+      icon = 'volume-off'
     }
 
-    return <Icon className="size-6" />
+    return <Icon name={icon} />
   }
 
   const handleToggleVolume = () => {
@@ -39,7 +40,12 @@ export const VolumeControl = () => {
 
   return (
     <div className="flex items-center gap-2">
-      <Button isIconOnly variant="ghost" onPress={handleToggleVolume}>
+      <Button
+        isIconOnly
+        aria-label={volume > 0 ? 'Mute' : 'Unmute'}
+        variant="ghost"
+        onPress={handleToggleVolume}
+      >
         {getVolumeIcon()}
       </Button>
       <VolumeSlider value={volumePercent} onValueChange={handleChangeVolume} className="w-31.25" />

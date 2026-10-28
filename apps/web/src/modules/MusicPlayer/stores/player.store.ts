@@ -1,10 +1,14 @@
+import { z } from 'zod'
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
+import { getStorageItem, setStorageItem } from '~/common/utils/storage'
 import type { Track } from '~/modules/Track'
 
 import { getVolumeFromStorage } from '../utils/volume'
+
+const repeatModeSchema = z.enum(['off', 'all', 'one'])
 
 export type PlaybackSource =
   | { type: 'playlist'; id: string; name: string }
@@ -28,6 +32,7 @@ interface CurrentTrack extends QueueItem {
 
 interface State {
   isPlaying: boolean
+  repeatMode: z.infer<typeof repeatModeSchema>
   currentTrack: CurrentTrack | null
   currentTime: number | null
   volume: number
@@ -38,6 +43,7 @@ interface State {
 
 interface Actions {
   setIsPlaying: (isPlaying: boolean) => void
+  cycleRepeatMode: () => void
   setCurrentTime: (time: State['currentTime']) => void
   setVolume: (volume: number) => void
   setPreviousVolume: (volume: number) => void
@@ -53,7 +59,9 @@ type Store = State & Actions
 
 export const selectCanGoNext = (state: State) =>
   state.queue.length > 0 ||
-  (state.context !== null && state.context.nextIndex < state.context.tracks.length)
+  (state.context !== null &&
+    (state.context.nextIndex < state.context.tracks.length ||
+      (state.repeatMode === 'all' && state.context.tracks.length > 0)))
 
 const getPreviousContextIndex = (state: State) => {
   if (!state.context || !state.currentTrack) return null
@@ -72,6 +80,7 @@ export const usePlayerStore = create<Store>()(
   devtools(
     immer((set) => ({
       isPlaying: false,
+      repeatMode: getStorageItem('repeatMode', repeatModeSchema, 'off'),
       currentTrack: null,
       currentTime: null,
       volume: getVolumeFromStorage('volume'),
@@ -80,6 +89,16 @@ export const usePlayerStore = create<Store>()(
       context: null,
 
       setIsPlaying: (isPlaying) => set({ isPlaying }, undefined, 'change is playing'),
+      cycleRepeatMode: () =>
+        set(
+          (state) => {
+            state.repeatMode =
+              state.repeatMode === 'off' ? 'all' : state.repeatMode === 'all' ? 'one' : 'off'
+            setStorageItem('repeatMode', state.repeatMode)
+          },
+          undefined,
+          'cycle repeat mode',
+        ),
       setCurrentTime: (currentTime) => set({ currentTime }, undefined, 'change current time'),
       setVolume: (volume) => set({ volume }, undefined, 'change volume'),
       setPreviousVolume: (volume) =>
@@ -123,6 +142,11 @@ export const usePlayerStore = create<Store>()(
               state.currentTrack = { ...firstTrack, contextIndex: null }
               advanced = true
               return
+            }
+
+            if (state.context && state.context.nextIndex >= state.context.tracks.length) {
+              if (state.repeatMode !== 'all' || state.context.tracks.length === 0) return
+              state.context.nextIndex = 0
             }
 
             if (state.context && state.context.nextIndex < state.context.tracks.length) {

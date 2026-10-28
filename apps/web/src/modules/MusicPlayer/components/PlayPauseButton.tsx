@@ -1,5 +1,6 @@
 import { Button } from '@heroui/react'
-import { Pause, Play } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 import { usePlayer } from '../hooks/usePlayer'
 import { usePlayerStore } from '../stores/player.store'
@@ -18,11 +19,15 @@ export const PlayPauseButton = () => {
     }
   }
 
-  const Icon = isPlaying ? Pause : Play
-
   return (
-    <Button isIconOnly variant="ghost" onPress={toggleIsPlaying} isDisabled={!currentTrack}>
-      <Icon weight="Filled" className="size-5" />
+    <Button
+      isIconOnly
+      aria-label={isPlaying ? 'Pause' : 'Play'}
+      variant="ghost"
+      onPress={toggleIsPlaying}
+      isDisabled={!currentTrack}
+    >
+      <Icon name={isPlaying ? 'pause' : 'play'} />
     </Button>
   )
 }

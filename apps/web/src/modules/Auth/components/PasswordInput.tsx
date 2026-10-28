@@ -1,13 +1,12 @@
 import { Button, InputGroup, type InputGroupInputProps } from '@heroui/react'
 import { useState } from 'react'
-import { Eye, EyeOff } from 'reicon-react'
+
+import { Icon } from '~/common/ui/Icon'
 
 export type PasswordInputProps = InputGroupInputProps
 
 export const PasswordInput = (props: PasswordInputProps) => {
   const [isVisible, setIsVisible] = useState(false)
-
-  const Icon = isVisible ? Eye : EyeOff
 
   return (
     <InputGroup fullWidth variant="secondary">
@@ -24,7 +23,7 @@ export const PasswordInput = (props: PasswordInputProps) => {
           variant="ghost"
           onPress={() => setIsVisible((prev) => !prev)}
         >
-          <Icon aria-hidden="true" className="text-muted size-4" />
+          <Icon name={isVisible ? 'eye' : 'eye-off'} className="text-muted size-4" />
         </Button>
       </InputGroup.Suffix>
     </InputGroup>
