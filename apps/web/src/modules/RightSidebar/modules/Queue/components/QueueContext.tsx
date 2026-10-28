@@ -48,6 +48,7 @@ export const QueueContext = () => {
             key={`${context.nextIndex + index}-${track.id}`}
             track={track}
             onPlay={() => usePlayerStore.getState().playContextTrack(context.nextIndex + index)}
+            onRemove={() => usePlayerStore.getState().removeContextTrack(context.nextIndex + index)}
           />
         ))}
       </div>

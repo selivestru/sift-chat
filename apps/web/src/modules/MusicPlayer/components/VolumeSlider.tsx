@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@heroui/react'
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 
 import { clamp } from '~/common/utils/clamp'

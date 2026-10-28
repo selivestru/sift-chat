@@ -1,3 +1,5 @@
+import { Button } from '@heroui/react'
+
 import { usePlayerStore } from '~/modules/MusicPlayer'
 
 import { QueueTrack } from './QueueTrack'
@@ -9,13 +11,19 @@ export const NextInQueue = () => {
 
   return (
     <section className="space-y-4">
-      <h2 className="font-bold">Next in queue</h2>
+      <div className="flex items-center justify-between gap-2">
+        <h2 className="font-bold">Next in queue</h2>
+        <Button variant="ghost" size="sm" onPress={() => usePlayerStore.getState().clearQueue()}>
+          Clear queue
+        </Button>
+      </div>
       <div className="space-y-4">
         {queue.map((item) => (
           <QueueTrack
             key={item.id}
             track={item.track}
             onPlay={() => usePlayerStore.getState().playQueueItem(item.id)}
+            onRemove={() => usePlayerStore.getState().removeFromQueue(item.id)}
           />
         ))}
       </div>

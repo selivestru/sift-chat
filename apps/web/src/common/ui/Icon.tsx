@@ -1,6 +1,7 @@
-import { cn } from 'cn'
+import { cn } from '@heroui/react'
 
 export type IconName =
+  | 'more'
   | 'clock'
   | 'close'
   | 'chevron-left'

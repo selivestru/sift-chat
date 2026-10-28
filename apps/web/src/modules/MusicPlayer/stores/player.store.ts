@@ -51,9 +51,11 @@ interface Actions {
   setVolume: (volume: number) => void
   setPreviousVolume: (volume: number) => void
   addToQueue: (item: QueueItem) => void
+  clearQueue: () => void
   removeFromQueue: (itemId: string) => void
   playQueueItem: (itemId: string) => void
   playContextTrack: (index: number) => void
+  removeContextTrack: (index: number) => void
   setContext: (context: PlaybackContext | null) => void
   startContext: (source: PlaybackSource, tracks: Track[], startIndex: number) => void
   next: () => boolean
@@ -161,6 +163,7 @@ export const usePlayerStore = create<Store>()(
           undefined,
           'remove from queue',
         ),
+      clearQueue: () => set({ queue: [] }, undefined, 'clear queue'),
       playQueueItem: (itemId) =>
         set(
           (state) => {
@@ -191,6 +194,30 @@ export const usePlayerStore = create<Store>()(
           },
           undefined,
           'play context track',
+        ),
+      removeContextTrack: (index) =>
+        set(
+          (state) => {
+            if (
+              !state.context ||
+              !Number.isInteger(index) ||
+              index < state.context.nextIndex ||
+              index >= state.context.tracks.length
+            )
+              return
+
+            state.context.tracks.splice(index, 1)
+            if (state.contextOrder) {
+              const originalIndex = state.contextOrder.positions[index]
+              state.contextOrder.originalTracks.splice(originalIndex, 1)
+              state.contextOrder.positions.splice(index, 1)
+              state.contextOrder.positions = state.contextOrder.positions.map((position) =>
+                position > originalIndex ? position - 1 : position,
+              )
+            }
+          },
+          undefined,
+          'remove context track',
         ),
       setContext: (context) =>
         set(

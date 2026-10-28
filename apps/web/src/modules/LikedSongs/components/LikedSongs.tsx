@@ -4,7 +4,7 @@ import { LikedSongsTable } from './LikedSongsTable'
 export const LikedSongs = () => {
   return (
     <div>
-      <LikedSongsTable data={tracks.slice(0, 5)} />
+      <LikedSongsTable data={tracks} />
     </div>
   )
 }

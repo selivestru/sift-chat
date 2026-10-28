@@ -1,5 +1,4 @@
-import { Tooltip } from '@heroui/react'
-import { cn } from 'cn'
+import { Tooltip, cn } from '@heroui/react'
 import { useRef, useState, type KeyboardEvent, type PointerEvent } from 'react'
 
 import { clamp } from '~/common/utils/clamp'

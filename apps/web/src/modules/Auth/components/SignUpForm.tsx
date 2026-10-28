@@ -8,9 +8,9 @@ import {
   Label,
   Spinner,
   TextField,
+  cn,
 } from '@heroui/react'
 import { Link } from '@tanstack/react-router'
-import { cn } from 'cn'
 import { Controller } from 'react-hook-form'
 
 import { Show } from '~/common/ui/Show'

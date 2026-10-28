@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@heroui/react'
 import { useState } from 'react'
 
 interface TrackCoverProps {

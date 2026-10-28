@@ -1,16 +1,18 @@
-import { Button } from '@heroui/react'
-import { cn } from 'cn'
+import { Button, cn } from '@heroui/react'
 
 import { Icon } from '~/common/ui/Icon'
 import { ArtistLinks } from '~/modules/Artist'
 import { TrackExplicitBadge, type Track } from '~/modules/Track'
 import { TrackCover } from '~/modules/Track/components/TrackCover'
 
+import { QueueTrackDropdown } from './QueueTrackDropdown'
+
 interface QueueTrackProps {
   track: Track
   isCurrent?: boolean
   isPlaying?: boolean
   onPlay: () => void
+  onRemove?: () => void
 }
 
 export const QueueTrack = ({
@@ -18,8 +20,9 @@ export const QueueTrack = ({
   isCurrent = false,
   isPlaying = false,
   onPlay,
+  onRemove,
 }: QueueTrackProps) => (
-  <div className="group/queue-track hover:bg-surface-tertiary focus-within:bg-surface-tertiary grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 p-2">
+  <div className="group/queue-track hover:bg-surface-tertiary focus-within:bg-surface-tertiary grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 p-2">
     <div className="relative size-12">
       <TrackCover coverUrl={track.album.imageUrl} title={track.album.name} className="size-12" />
       <Button
@@ -45,5 +48,6 @@ export const QueueTrack = ({
         <ArtistLinks artists={track.artists} />
       </div>
     </div>
+    {onRemove && <QueueTrackDropdown trackName={track.name} onRemove={onRemove} />}
   </div>
 )

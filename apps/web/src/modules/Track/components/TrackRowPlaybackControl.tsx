@@ -1,5 +1,4 @@
-import { Button } from '@heroui/react'
-import { cn } from 'cn'
+import { Button, cn } from '@heroui/react'
 
 import { Equalizer } from '~/common/ui/Equalizer'
 import { Icon } from '~/common/ui/Icon'

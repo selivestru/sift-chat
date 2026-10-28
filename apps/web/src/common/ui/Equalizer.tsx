@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@heroui/react'
 
 export const Equalizer = ({ className, ...props }: React.ComponentProps<'svg'>) => {
   return (

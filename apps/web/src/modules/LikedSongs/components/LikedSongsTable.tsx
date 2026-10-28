@@ -12,7 +12,7 @@ const columns: TrackTableColumn[] = [
       <Link
         to="/album/$id"
         params={{ id: track.album.id }}
-        className="text-muted hover:text-foreground group-hover/track-row:text-foreground block w-fit max-w-full truncate hover:underline"
+        className="text-muted hover:text-foreground group-hover/track-row:text-foreground group-aria-selected/track-row:text-foreground block w-fit max-w-full truncate hover:underline"
       >
         {track.album.name}
       </Link>

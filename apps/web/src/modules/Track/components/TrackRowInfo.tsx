@@ -1,4 +1,4 @@
-import { cn } from 'cn'
+import { cn } from '@heroui/react'
 
 import { ArtistLinks } from '~/modules/Artist'
 import type { PlaybackSource } from '~/modules/MusicPlayer/stores/player.store'
@@ -30,7 +30,7 @@ export const TrackRowInfo = ({ track, source }: TrackRowInfoProps) => {
       >
         {track.name}
       </span>
-      <div className="text-muted group-hover/track-row:text-foreground truncate">
+      <div className="text-muted group-hover/track-row:text-foreground group-aria-selected/track-row:text-foreground truncate">
         <TrackExplicitBadge explicit={track.explicit} /> <ArtistLinks artists={track.artists} />
       </div>
     </div>

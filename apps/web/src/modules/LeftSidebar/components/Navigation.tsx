@@ -1,5 +1,5 @@
+import { cn } from '@heroui/react'
 import { Link } from '@tanstack/react-router'
-import { cn } from 'cn'
 
 import { Icon, type IconName } from '~/common/ui/Icon'
 import { Show } from '~/common/ui/Show'
