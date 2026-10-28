@@ -12,7 +12,11 @@ export const NextInQueue = () => {
       <h2 className="font-bold">Next in queue</h2>
       <div className="space-y-4">
         {queue.map((item) => (
-          <QueueTrack key={item.id} track={item.track} />
+          <QueueTrack
+            key={item.id}
+            track={item.track}
+            onPlay={() => usePlayerStore.getState().playQueueItem(item.id)}
+          />
         ))}
       </div>
     </section>

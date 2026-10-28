@@ -52,6 +52,8 @@ interface Actions {
   setPreviousVolume: (volume: number) => void
   addToQueue: (item: QueueItem) => void
   removeFromQueue: (itemId: string) => void
+  playQueueItem: (itemId: string) => void
+  playContextTrack: (index: number) => void
   setContext: (context: PlaybackContext | null) => void
   startContext: (source: PlaybackSource, tracks: Track[], startIndex: number) => void
   next: () => boolean
@@ -158,6 +160,37 @@ export const usePlayerStore = create<Store>()(
           },
           undefined,
           'remove from queue',
+        ),
+      playQueueItem: (itemId) =>
+        set(
+          (state) => {
+            const index = state.queue.findIndex((item) => item.id === itemId)
+            if (index < 0) return
+            const item = state.queue[index]
+            state.queue.splice(0, index + 1)
+            state.currentTrack = { ...item, contextIndex: null }
+          },
+          undefined,
+          'play queue item',
+        ),
+      playContextTrack: (index) =>
+        set(
+          (state) => {
+            if (
+              !state.context ||
+              index < state.context.nextIndex ||
+              index >= state.context.tracks.length
+            )
+              return
+            state.currentTrack = {
+              id: crypto.randomUUID(),
+              track: state.context.tracks[index],
+              contextIndex: index,
+            }
+            state.context.nextIndex = index + 1
+          },
+          undefined,
+          'play context track',
         ),
       setContext: (context) =>
         set(

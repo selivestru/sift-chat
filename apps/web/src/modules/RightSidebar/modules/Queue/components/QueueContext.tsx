@@ -43,8 +43,12 @@ export const QueueContext = () => {
         Next from: <QueueSource source={context.source} />
       </h2>
       <div className="space-y-4">
-        {tracks.map((track) => (
-          <QueueTrack key={track.id} track={track} />
+        {tracks.map((track, index) => (
+          <QueueTrack
+            key={`${context.nextIndex + index}-${track.id}`}
+            track={track}
+            onPlay={() => usePlayerStore.getState().playContextTrack(context.nextIndex + index)}
+          />
         ))}
       </div>
     </section>
