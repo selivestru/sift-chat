@@ -4,7 +4,9 @@ import { cn } from 'cn'
 import { Equalizer } from '~/common/ui/Equalizer'
 import { Icon } from '~/common/ui/Icon'
 import { usePlayer, usePlayerStore } from '~/modules/MusicPlayer'
+import type { PlaybackSource } from '~/modules/MusicPlayer/stores/player.store'
 
+import { useIsCurrentTrack } from '../hooks/useIsCurrentTrack'
 import type { Track } from '../types/track.types'
 
 const hideOnInteraction = 'group-hover/track-row:hidden [@media(hover:none)]:hidden'
@@ -15,20 +17,20 @@ const showOnInteraction =
 interface TrackRowPlaybackControlProps {
   position: number
   track: Track
+  source: PlaybackSource
   onPlay: () => void
 }
 
 export const TrackRowPlaybackControl = ({
   position,
   track,
+  source,
   onPlay,
 }: TrackRowPlaybackControlProps) => {
   const { play, pause } = usePlayer()
 
   const isPlaying = usePlayerStore((state) => state.isPlaying)
-  const currentTrack = usePlayerStore((state) => state.currentTrack)
-
-  const isSelectedCurrentTrack = currentTrack?.track.id === track.id
+  const isSelectedCurrentTrack = useIsCurrentTrack(track.id, source)
   const isPlayingCurrentTrack = isSelectedCurrentTrack && isPlaying
   const isPausedCurrentTrack = isSelectedCurrentTrack && !isPlaying
 
