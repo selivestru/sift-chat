@@ -29,6 +29,7 @@ export class AuthService {
     const newUser = await this.usersService.create({
       email: body.email,
       password: hashedPassword,
+      emailVerified: true, // TODO: Implement email verification
     })
 
     return safeUser(newUser)

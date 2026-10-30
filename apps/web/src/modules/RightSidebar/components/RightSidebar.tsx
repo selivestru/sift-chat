@@ -19,7 +19,7 @@ export const RightSidebar = () => {
   return (
     <aside
       className={cn(
-        'border-l-border overflow-y-auto overscroll-contain border-l',
+        'border-l-border overflow-y-auto overscroll-contain border-l scrollbar-thin',
         isCollapsed ? 'w-fit content-center' : 'w-100',
       )}
     >

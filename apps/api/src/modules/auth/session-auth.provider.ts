@@ -13,7 +13,7 @@ import { SafeUser } from '../users/users.types.js'
 @Injectable()
 export class SessionAuth extends SessionCookieProvider<SafeUser> {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     registry: AuthenticationRegistry,
   ) {
     super()
@@ -21,7 +21,7 @@ export class SessionAuth extends SessionCookieProvider<SafeUser> {
   }
 
   async validate(session: SessionRecord) {
-    const user = await this.userService.findById(session.userId)
+    const user = await this.usersService.findById(session.userId)
     return user ? safeUser(user) : null
   }
 }

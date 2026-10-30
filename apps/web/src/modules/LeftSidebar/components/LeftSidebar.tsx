@@ -12,7 +12,7 @@ export const LeftSidebar = () => {
   return (
     <aside
       className={cn(
-        'border-r-border space-y-4 overflow-y-auto overscroll-contain border-r p-4',
+        'border-r-border space-y-4 overflow-y-auto overscroll-contain border-r p-4 scrollbar-thin',
         isCollapsed ? 'w-20' : 'w-75',
       )}
     >

@@ -18,6 +18,5 @@ export interface AlbumSummary {
 export interface Album extends AlbumSummary {
   type: AlbumType
   artists: ArtistSummary[]
-  totalTracks: number
   releaseDate: string
 }

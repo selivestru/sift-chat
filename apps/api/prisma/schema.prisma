@@ -11,6 +11,40 @@ enum OAuthProvider {
   GOOGLE
 }
 
+enum ReleaseType {
+  SINGLE
+  EP
+  ALBUM
+}
+
+enum ArtistMemberRole {
+  OWNER
+  MANAGER
+}
+
+enum ReleaseStatus {
+  DRAFT
+  PUBLISHED
+  UNAVAILABLE
+}
+
+enum TrackArtistRole {
+  PRIMARY
+  FEATURED
+}
+
+enum AudioAssetKind {
+  SOURCE
+  HLS_PACKAGE
+}
+
+enum AudioAssetStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
 model User {
   id            String   @id @default(uuid(7)) @db.Uuid
   email         String   @unique
@@ -18,7 +52,9 @@ model User {
   emailVerified Boolean  @default(false)
   createdAt     DateTime @default(now())
 
-  accounts OAuthAccount[]
+  accounts      OAuthAccount[]
+  artistMembers ArtistMember[]
+  releases      Release[]      @relation("ReleaseCreator")
 
   @@index([email])
   @@map("users")
@@ -36,4 +72,138 @@ model OAuthAccount {
   @@unique([provider, providerAccountId])
   @@index([userId])
   @@map("oauth_accounts")
+}
+
+model Artist {
+  id        String   @id @default(uuid(7)) @db.Uuid
+  name      String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members        ArtistMember[]
+  ownedReleases  Release[]       @relation("ReleaseOwner")
+  recordings     Recording[]     @relation("RecordingOwner")
+  releaseCredits ReleaseArtist[]
+  trackCredits   TrackArtist[]
+
+  @@map("artists")
+}
+
+model ArtistMember {
+  artistId  String           @db.Uuid
+  userId    String           @db.Uuid
+  role      ArtistMemberRole
+  createdAt DateTime         @default(now())
+
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  @@id([artistId, userId])
+  @@index([userId])
+  @@map("artist_members")
+}
+
+model Release {
+  id            String        @id @default(uuid(7)) @db.Uuid
+  name          String
+  imageUrl      String?
+  type          ReleaseType
+  status        ReleaseStatus @default(DRAFT)
+  publishedAt   DateTime?
+  ownerArtistId String        @db.Uuid
+  createdById   String        @db.Uuid
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  ownerArtist Artist          @relation("ReleaseOwner", fields: [ownerArtistId], references: [id], onDelete: Restrict)
+  createdBy   User            @relation("ReleaseCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  tracks      Track[]
+  artists     ReleaseArtist[]
+
+  @@index([ownerArtistId])
+  @@index([createdById])
+  @@map("releases")
+}
+
+model ReleaseArtist {
+  releaseId String @db.Uuid
+  artistId  String @db.Uuid
+  position  Int
+
+  release Release @relation(fields: [releaseId], references: [id], onDelete: Cascade)
+  artist  Artist  @relation(fields: [artistId], references: [id], onDelete: Restrict)
+
+  @@id([releaseId, artistId])
+  @@unique([releaseId, position])
+  @@index([artistId])
+  @@map("release_artists")
+}
+
+model Recording {
+  id            String   @id @default(uuid(7)) @db.Uuid
+  ownerArtistId String   @db.Uuid
+  name          String
+  durationMs    Int?
+  explicit      Boolean?
+  playCount     BigInt   @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  ownerArtist Artist       @relation("RecordingOwner", fields: [ownerArtistId], references: [id], onDelete: Restrict)
+  tracks      Track[]
+  audioAssets AudioAsset[]
+
+  @@index([ownerArtistId])
+  @@map("recordings")
+}
+
+model Track {
+  id          String   @id @default(uuid(7)) @db.Uuid
+  releaseId   String   @db.Uuid
+  recordingId String   @db.Uuid
+  discNumber  Int      @default(1)
+  trackNumber Int
+  playCount   BigInt   @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  release   Release       @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  recording Recording     @relation(fields: [recordingId], references: [id], onDelete: Restrict)
+  artists   TrackArtist[]
+
+  @@unique([releaseId, discNumber, trackNumber])
+  @@index([recordingId])
+  @@map("tracks")
+}
+
+model TrackArtist {
+  trackId  String          @db.Uuid
+  artistId String          @db.Uuid
+  role     TrackArtistRole
+  position Int
+
+  track  Track  @relation(fields: [trackId], references: [id], onDelete: Cascade)
+  artist Artist @relation(fields: [artistId], references: [id], onDelete: Restrict)
+
+  @@id([trackId, artistId])
+  @@unique([trackId, position])
+  @@index([artistId])
+  @@map("track_artists")
+}
+
+model AudioAsset {
+  id           String           @id @default(uuid(7)) @db.Uuid
+  recordingId  String           @db.Uuid
+  kind         AudioAssetKind
+  status       AudioAssetStatus @default(PENDING)
+  storageKey   String?          @unique
+  errorMessage String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  recording Recording @relation(fields: [recordingId], references: [id], onDelete: Restrict)
+
+  @@unique([recordingId, kind])
+  @@map("audio_assets")
 }

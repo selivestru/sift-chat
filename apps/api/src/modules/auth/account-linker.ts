@@ -16,7 +16,7 @@ import { SafeUser } from '../users/users.types.js'
 @Injectable()
 export class AccountLinker extends OidcAccountResolver {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     registry: AuthenticationRegistry,
   ) {
     super()
@@ -34,14 +34,14 @@ export class AccountLinker extends OidcAccountResolver {
       return null
     }
 
-    const linked = await this.userService.findByIdentity(provider, profile.subject)
+    const linked = await this.usersService.findByIdentity(provider, profile.subject)
 
     if (linkTo) {
       if (linked && linked.id !== linkTo.id) {
         throw new ConflictException('This Google account belongs to another customer')
       }
 
-      const user = await this.userService.linkIdentity(linkTo.id, provider, profile.subject)
+      const user = await this.usersService.linkIdentity(linkTo.id, provider, profile.subject)
       return safeUser(user)
     }
 
@@ -53,10 +53,10 @@ export class AccountLinker extends OidcAccountResolver {
       return null
     }
 
-    const existing = await this.userService.findByEmail(profile.email)
+    const existing = await this.usersService.findByEmail(profile.email)
 
     if (!existing) {
-      const user = await this.userService.create({
+      const user = await this.usersService.create({
         email: profile.email,
         emailVerified: true,
         accounts: {
@@ -76,7 +76,7 @@ export class AccountLinker extends OidcAccountResolver {
       )
     }
 
-    const user = await this.userService.linkIdentity(existing.id, provider, profile.subject)
+    const user = await this.usersService.linkIdentity(existing.id, provider, profile.subject)
 
     return safeUser(user)
   }
